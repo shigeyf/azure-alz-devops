@@ -1,0 +1,5 @@
+# .gitignore
+
+azurerm.tfbackend
+backend.tf
+bootstrap.config.json
