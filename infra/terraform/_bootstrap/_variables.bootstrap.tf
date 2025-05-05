@@ -9,5 +9,5 @@ variable "bootstrap_config_filename" {
 variable "tfbackend_config_template_filename" {
   description = "Path to the backend config template file"
   type        = string
-  default     = "./azurerm.tfbackend"
+  default     = "./devops.azurerm.tfbackend"
 }

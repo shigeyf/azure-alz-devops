@@ -1,14 +1,26 @@
 // _variables.tf
 
 variable "target_subscription_id" {
-  description = "Subscription Id for the bootstrap resource deployment"
+  description = "Azure Subscription Id for the bootstrap resources. Leave empty to use the az login subscription"
   type        = string
   default     = ""
+
+  validation {
+    condition = (
+      var.target_subscription_id == ""
+      || can(regex(
+        "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$",
+        var.target_subscription_id,
+      ))
+    )
+    error_message = "Azure subscription id must be a valid GUID"
+  }
 }
 
 variable "naming_suffix" {
   description = "Resource naming suffix for the deployed resources"
   type        = list(string)
+  default     = ["alz", "devops", "bootstrap"]
 }
 
 variable "location" {
