@@ -44,21 +44,21 @@ variable "customer_managed_key_policy" {
   description = "Key policy for Customer Managed Key"
   type = object({
     key_type        = string
-    key_size        = optional(number, 4096)
+    key_size        = optional(number)
     curve_type      = optional(string)
     expiration_date = optional(string, null)
     rotation_policy = optional(object({
       automatic = optional(object({
         time_after_creation = optional(string)
-        time_before_expiry  = optional(string, "P30D")
+        time_before_expiry  = optional(string)
       }))
-      expire_after         = optional(string, "P30D")
-      notify_before_expiry = optional(string, "P29D")
+      expire_after         = optional(string)
+      notify_before_expiry = optional(string)
     }))
   })
   default = {
     key_type = "RSA"
-    key_size = 4096
+    key_size = 2048
     rotation_policy = {
       automatic = {
         time_before_expiry = "P30D"
