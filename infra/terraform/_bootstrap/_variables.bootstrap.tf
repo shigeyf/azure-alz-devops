@@ -1,7 +1,7 @@
 // _variables.bootstrap.tf
 
 variable "bootstrap_config_filename" {
-  description = "Path to the bootstrap output file"
+  description = "Path to the bootstrap config file"
   type        = string
   default     = "./bootstrap.config.json"
 }
