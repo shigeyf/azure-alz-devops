@@ -1,5 +1,11 @@
 // _variables.tf
 
+variable "target_subscription_id" {
+  description = "Subscription Id for the bootstrap resource deployment"
+  type        = string
+  default     = ""
+}
+
 variable "naming_suffix" {
   description = "Resource naming suffix for the deployed resources"
   type        = list(string)
