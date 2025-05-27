@@ -1,0 +1,76 @@
+// _variables.tf
+
+variable "organization_url_secret_id" {
+  description = "Azure DevOps Organization URL secret Id"
+  type        = string
+}
+
+variable "agent_pat_secret_id" {
+  description = "Azure DevOps Agent PAT (Personal Access Token) secret Id"
+  type        = string
+}
+
+variable "acr_login_server" {
+  description = "Azure Container Registry login server URL"
+  type        = string
+}
+
+variable "container_cpu" {
+  description = "CPU allocation for the container image"
+  type        = string
+  default     = "1.0"
+}
+
+variable "container_memory" {
+  description = "Memory allocation for the container image"
+  type        = string
+  default     = "2.0"
+}
+
+variable "container_cpu_limit" {
+  description = "CPU limit for the container image"
+  type        = string
+  default     = "1.0"
+}
+
+variable "container_memory_limit" {
+  description = "Memory limit for the container image"
+  type        = string
+  default     = "2.0"
+}
+
+variable "container_platform_os" {
+  description = "Platform OS for the container image"
+  type        = string
+  default     = "Linux"
+}
+
+variable "container_image_name" {
+  description = "Contaienr image name in the registry"
+  type        = string
+  default     = "azuredevops-agent-aci"
+}
+
+variable "container_src_repo_url" {
+  description = "Repositoy URL for building the container image"
+  type        = string
+  default     = "https://github.com/Azure/avm-container-images-cicd-agents-and-runners"
+}
+
+variable "container_src_repo_tag" {
+  description = "Tag of the repositoy for building the container image"
+  type        = string
+  default     = "bc4087f"
+}
+
+variable "container_src_docker_root" {
+  description = "Root path in the repository for building the container image"
+  type        = string
+  default     = "azure-devops-agent-aci"
+}
+
+variable "container_src_docker_file" {
+  description = "Docker file for building the container image"
+  type        = string
+  default     = "dockerfile"
+}
