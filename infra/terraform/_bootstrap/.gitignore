@@ -1,5 +1,5 @@
 # .gitignore
 
-azurerm.tfbackend
+*.azurerm.tfbackend
 backend.tf
 bootstrap.config.json
