@@ -16,11 +16,6 @@ variable "runner_pat_secret_id" {
   type        = string
 }
 
-variable "acr_login_server" {
-  description = "Azure Container Registry login server URL"
-  type        = string
-}
-
 variable "container_cpu" {
   description = "CPU allocation for the container image"
   type        = string

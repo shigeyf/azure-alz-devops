@@ -19,7 +19,7 @@ output "container" {
       os_type = var.container_platform_os
       container = {
         name         = var.container_image_name
-        image        = "${var.acr_login_server}/${local._container_image_name}"
+        image        = local._container_image_name
         cpu          = var.container_cpu
         memory       = var.container_memory
         cpu_limit    = var.container_cpu_limit
