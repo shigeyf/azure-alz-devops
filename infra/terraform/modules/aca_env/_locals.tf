@@ -1,0 +1,4 @@
+// _locals.tf
+
+locals {
+}
