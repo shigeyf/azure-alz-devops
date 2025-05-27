@@ -34,8 +34,8 @@ resource "azurerm_container_registry_task" "acr_task" {
     module.acr,
     module.azuredevops_agent_aca,
     module.github_runner_aca,
-    #module.azuredevops_aci,
-    #module.github_aci,
+    module.azuredevops_agent_aci,
+    module.github_runner_aci,
   ]
 }
 

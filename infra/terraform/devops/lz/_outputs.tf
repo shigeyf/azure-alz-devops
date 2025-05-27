@@ -33,7 +33,9 @@ output "devops_network" {
 output "container_specs" {
   value = {
     azuredevops_agent_aca = length(module.azuredevops_agent_aca) > 0 ? module.azuredevops_agent_aca[0] : null
+    azuredevops_agent_aci = length(module.azuredevops_agent_aci) > 0 ? module.azuredevops_agent_aci[0] : null
     github_runner_aca     = length(module.github_runner_aca) > 0 ? module.github_runner_aca[0] : null
+    github_runner_aci     = length(module.github_runner_aci) > 0 ? module.github_runner_aci[0] : null
   }
   description = "Container parameters for Azure DevOps agents and/or GitHub runners"
 }
