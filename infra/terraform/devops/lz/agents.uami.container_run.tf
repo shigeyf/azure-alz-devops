@@ -5,7 +5,7 @@ resource "azurerm_user_assigned_identity" "container_run" {
   name                = local.uami_container_run_name
   resource_group_name = local.agents_resource_group_name
   location            = var.location
-  tags                = var.tags
+  tags                = local.agents_tags
 }
 
 resource "azurerm_role_assignment" "container_run_ra_acr_pull" {

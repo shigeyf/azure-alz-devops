@@ -12,7 +12,7 @@ resource "azurerm_private_dns_zone" "this" {
   for_each            = local.enable_network_resources ? toset(local.private_dns_zones) : []
   name                = each.value
   resource_group_name = local.network_resource_group_name
-  tags                = var.tags
+  tags                = local.network_tags
 
   depends_on = [
     azurerm_resource_group.network,

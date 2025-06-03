@@ -24,7 +24,7 @@ resource "azurerm_private_endpoint" "bootstrap" {
   name                = each.value.pe_name
   location            = var.location
   resource_group_name = local.network_resource_group_name
-  tags                = var.tags
+  tags                = local.network_tags
   subnet_id           = local.private_endpoint_subnet_id
 
   private_service_connection {

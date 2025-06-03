@@ -8,7 +8,7 @@ resource "azurerm_container_registry_task" "acr_task" {
   for_each              = local.enable_agents_resources ? local.tasks : {}
   container_registry_id = module.acr[0].output.acr_id
   name                  = each.value.task_name
-  tags                  = var.tags
+  tags                  = local.agents_tags
 
   docker_step {
     context_access_token = "a" # dummy

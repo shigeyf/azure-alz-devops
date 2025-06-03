@@ -5,7 +5,7 @@ resource "azurerm_log_analytics_workspace" "this" {
   name                = local.container_app_log_analytics_name
   location            = var.location
   resource_group_name = local.agents_resource_group_name
-  tags                = var.tags
+  tags                = local.agents_tags
 
   sku               = "PerGB2018"
   retention_in_days = 30

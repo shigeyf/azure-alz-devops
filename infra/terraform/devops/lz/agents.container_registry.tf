@@ -7,7 +7,7 @@ module "acr" {
 
   resource_group_name           = local.agents_resource_group_name
   location                      = var.location
-  tags                          = var.tags
+  tags                          = local.agents_tags
   container_registry_name       = local.container_registry_name
   sku                           = local.enable_network_resources ? "Premium" : "Standard"
   enable_user_assigned_identity = false

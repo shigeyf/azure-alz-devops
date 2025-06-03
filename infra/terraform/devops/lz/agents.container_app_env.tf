@@ -6,7 +6,7 @@ module "aca" {
   container_app_environment_name = local.container_app_environment_name
   location                       = var.location
   resource_group_name            = local.agents_resource_group_name
-  tags                           = var.tags
+  tags                           = local.agents_tags
 
   logs_destination                        = "log-analytics"
   log_analytics_workspace_id              = azurerm_log_analytics_workspace.this[0].id

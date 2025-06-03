@@ -7,7 +7,7 @@ module "vnet" {
 
   resource_group_name = local.network_resource_group_name
   location            = var.location
-  tags                = var.tags
+  tags                = local.network_tags
 
   vnet_name                  = local.vnet_name
   nat_gateway_name           = local.nat_gateway_name
