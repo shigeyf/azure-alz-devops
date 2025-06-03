@@ -23,12 +23,12 @@ const config = {
   // [Dart]
   //'**/*.dart': (filenames) => filenames.map((filename) => `npm run dartlint:lint-staged '${filename}'`),
   // [Terraform]
-  //'**/*.tf': (filenames) => {
-  //  const formatter = filenames.map((filename) => `terraform fmt '${filename}'`);
-  //  const directories = filenames.map((filename) => path.dirname(filename));
-  //  const uniqueDirectories = [...new Set(directories)];
-  //  const linter = uniqueDirectories.map((dir) => `tflint --chdir=${dir}`);
-  //  return formatter.concat(linter);
-  //},
+  '**/*.tf': (filenames) => {
+    const formatter = filenames.map((filename) => `terraform fmt '${filename}'`);
+    const directories = filenames.map((filename) => path.dirname(filename));
+    const uniqueDirectories = [...new Set(directories)];
+    const linter = uniqueDirectories.map((dir) => `tflint --chdir=${dir}`);
+    return formatter.concat(linter);
+  },
 }
 module.exports = config
