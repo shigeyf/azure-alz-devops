@@ -17,6 +17,17 @@ variable "azuredevops_organization_name" {
   }
 }
 
+variable "azuredevops_personal_access_token" {
+  description = "Azure DevOps PAT (Personal Access Token)"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.enable_azuredevops == false ? true : var.azuredevops_personal_access_token != ""
+    error_message = "Azure DevOps PAT (Personal Access Token) must be not null string"
+  }
+}
+
 variable "azuredevops_personal_access_token_for_agents" {
   description = "Azure DevOps PAT (Personal Access Token) for the Self-Hosted Agent"
   type        = string

@@ -22,6 +22,17 @@ variable "github_enterprise_name" {
   default     = ""
 }
 
+variable "github_personal_access_token" {
+  description = "GitHub PAT (Personal Access Token) for deployment"
+  type        = string
+  default     = ""
+
+  validation {
+    condition     = var.enable_github == false ? true : var.github_personal_access_token != ""
+    error_message = "GitHub PAT (Personal Access Token) must be not null string"
+  }
+}
+
 variable "github_personal_access_token_for_runners" {
   description = "GitHub PAT (Personal Access Token) for the Self-Hosted Runners"
   type        = string

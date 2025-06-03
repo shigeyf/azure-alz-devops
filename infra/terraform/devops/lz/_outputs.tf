@@ -26,6 +26,8 @@ output "devops_network" {
     vnet                = length(module.vnet) > 0 ? module.vnet[0].output : null
     private_dns_zones   = { for index, z in azurerm_private_dns_zone.this : index => z.id }
     private_endpoints   = { for index, pe in azurerm_private_endpoint.bootstrap : index => pe.id }
+    aca_subnet_id       = local.container_app_subnet_id
+    aci_subnet_id       = local.container_instance_subnet_id
   }
   description = "Network resources"
 }
@@ -38,4 +40,21 @@ output "container_specs" {
     github_runner_aci     = length(module.github_runner_aci) > 0 ? module.github_runner_aci[0] : null
   }
   description = "Container parameters for Azure DevOps agents and/or GitHub runners"
+}
+
+output "options" {
+  value = {
+    enable_azuredevops        = var.enable_azuredevops
+    enable_github             = var.enable_github
+    enable_self_hosted_agents = var.enable_self_hosted_agents
+    azuredevops = {
+      organization_name     = var.azuredevops_organization_name
+      personal_access_token = local.vcs_secret_azuredevops_personal_access_token
+    }
+    github = {
+      organization_name     = var.github_organization_name
+      enterprise_name       = var.github_enterprise_name
+      personal_access_token = local.vcs_secret_github_personal_access_token
+    }
+  }
 }
