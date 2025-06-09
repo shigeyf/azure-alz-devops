@@ -23,7 +23,7 @@ on:
         type: string
       tf_module_root:
         description: Terraform Module root relative path
-        default: 'infra'
+        default: '${tf_module_root}'
         type: string
       tf_cli_version:
         description: Terraform CLI Version

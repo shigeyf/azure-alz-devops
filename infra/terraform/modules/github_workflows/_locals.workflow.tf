@@ -48,6 +48,7 @@ locals {
         templates_repository_name = var.use_templates_repository ? var.templates_repository_name : var.repository_name
         action_path               = "${local.github_actions_root}/${local.actions_directory}"
         template_ref              = var.templates_ref
+        tf_module_root            = var.tf_module_root
         runner_runs_on            = local.runner_runs_on
       })
     }

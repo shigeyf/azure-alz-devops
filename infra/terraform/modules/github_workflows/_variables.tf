@@ -37,3 +37,9 @@ variable "runner_group_name" {
   type        = string
   default     = ""
 }
+
+variable "tf_module_root" {
+  type        = string
+  description = "The root folder path for Terraform modules"
+  default     = "infra"
+}
