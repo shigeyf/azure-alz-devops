@@ -10,7 +10,9 @@ on:
 
 jobs:
   check-ref:
-    runs-on: ${runner_runs_on}
+    # prettier-ignore
+    runs-on:
+      ${runner_runs_on}
     outputs:
       branch_name: $${{ steps.set-branch-name.outputs.branch_name }}
     steps:

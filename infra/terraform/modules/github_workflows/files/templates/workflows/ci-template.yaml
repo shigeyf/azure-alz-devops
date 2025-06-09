@@ -34,7 +34,9 @@ jobs:
   auto_pr_reviewers:
     name: Automatically add PR reviewers
     if: github.event_name == 'pull_request' && inputs.auto_pr_reviewers == 'true'
-    runs-on: ${runner_runs_on}
+    # prettier-ignore
+    runs-on:
+      ${runner_runs_on}
     steps:
       - name: Get GitHub App Token
         uses: actions/create-github-app-token@v2
@@ -54,7 +56,9 @@ jobs:
 
   validate:
     name: Terraform validate
-    runs-on: ${runner_runs_on}
+    # prettier-ignore
+    runs-on:
+      ${runner_runs_on}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -83,7 +87,9 @@ jobs:
 
   plan:
     name: Terraform plan
-    runs-on: ${runner_runs_on}
+    # prettier-ignore
+    runs-on:
+      ${runner_runs_on}
     concurrency:
       group: 'terraform-$${{ inputs.branch_name }}-tfstate'
       cancel-in-progress: false

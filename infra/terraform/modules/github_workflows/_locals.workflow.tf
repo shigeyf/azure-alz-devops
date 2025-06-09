@@ -31,6 +31,7 @@ locals {
         ci_template_path          = "${local.github_actions_root}/${local.ci_template_filename}"
         cd_template_path          = "${local.github_actions_root}/${local.cd_template_filename}"
         template_ref              = var.templates_ref
+        runner_runs_on            = local.runner_runs_on
       })
     }
   }

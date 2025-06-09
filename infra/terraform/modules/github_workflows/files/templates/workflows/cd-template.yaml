@@ -32,7 +32,9 @@ on:
 jobs:
   plan:
     name: Terraform plan
-    runs-on: ${runner_runs_on}
+    # prettier-ignore
+    runs-on:
+      ${runner_runs_on}
     concurrency:
       group: 'terraform-$${{ inputs.branch_name }}-tfstate'
       cancel-in-progress: false
@@ -157,7 +159,9 @@ jobs:
 
   apply:
     name: Terraform apply
-    runs-on: ${runner_runs_on}
+    # prettier-ignore
+    runs-on:
+      ${runner_runs_on}
     concurrency:
       group: 'terraform-$${{ inputs.branch_name }}-tfstate'
       cancel-in-progress: false
