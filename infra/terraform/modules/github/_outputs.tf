@@ -11,21 +11,17 @@ output "organization_url" {
   value = local.organization_url
 }
 
-output "subjects" {
-  value = local.oidc_subjects
+output "repositories" {
+  value = {
+    main      = github_repository.this.http_clone_url
+    templates = var.use_templates_repository ? github_repository.templates[0].http_clone_url : null
+  }
 }
 
-output "issuer" {
-  value = "https://token.actions.githubusercontent.com"
+output "federations" {
+  value = local.oidc_fedarations
 }
 
 output "agent_pool_name" {
   value = var.use_self_hosted_agents ? github_actions_runner_group.this[0].name : null
-}
-
-output "repositories" {
-  value = {
-    main      = github_repository.this.http_clone_url
-    templates = var.use_separate_repo_for_pipeline_templates ? github_repository.templates[0].http_clone_url : null
-  }
 }

@@ -1,8 +1,8 @@
 // _locals.tf
 
 locals {
-  free_plan       = "free"
-  enterprise_plan = "enterprise"
+  free_plan = "free"
+  # enterprise_plan = "enterprise"
 }
 
 locals {
@@ -11,5 +11,5 @@ locals {
 }
 
 locals {
-  default_branch = "refs/heads/main"
+  # default_branch = "refs/heads/main"
 }

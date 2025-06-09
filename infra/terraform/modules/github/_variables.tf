@@ -16,20 +16,3 @@ variable "api_domain_name" {
   type        = string
   default     = "api.github.com"
 }
-
-variable "approvers_group" {
-  description = "Name of the CI/CD approvers group"
-  type = object({
-    name      = string
-    approvers = optional(list(string), [])
-  })
-}
-
-variable "variables" {
-  description = "Variables defined in the GitHub Actions"
-  type = list(object({
-    name  = string
-    value = string
-  }))
-  default = []
-}
