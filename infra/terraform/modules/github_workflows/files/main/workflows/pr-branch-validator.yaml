@@ -1,0 +1,50 @@
+---
+name: PR Branch Validator
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  validate_pr_branches:
+    runs-on: ${runner_runs_on}
+    steps:
+      - name: Validate PR source branch
+        run: |
+          SOURCE_BRANCH="$${{ github.event.pull_request.head.ref }}"
+          TARGET_BRANCH="$${{ github.event.pull_request.base.ref }}"
+
+          # 1. PR from features/* branches
+          if [[ "$SOURCE_BRANCH" == features/* ]] && [[ "$TARGET_BRANCH" != dev ]]; then
+            echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            echo "[*] 'features/*' branches can only target 'dev' branch."
+            exit 1
+          fi
+
+          # 2. PR from dev branch
+          if [[ "$SOURCE_BRANCH" == dev ]] && [[ "$TARGET_BRANCH" != staging ]]; then
+            echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            echo "[*] 'dev' branches can only target 'staging' branch."
+            exit 1
+          fi
+
+          # 3. PR from staging branch
+          if [[ "$SOURCE_BRANCH" == staging ]] && [[ "$TARGET_BRANCH" != main ]]; then
+            echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            echo "[*] 'staging' branches can only target 'main' branch."
+            exit 1
+          fi
+
+          # 4. PR from main branch
+          if [[ "$SOURCE_BRANCH" == main ]]; then
+            echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            echo "[*] Any pull requests from 'main' branch are not allowed."
+            exit 1
+          fi
+
+          # 5. PR from maintain-workflow branch (for workflow maintenance)
+          if [[ "$SOURCE_BRANCH" == maintain-workflow ]]; then
+            echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+          fi
+
+          echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"

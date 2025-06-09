@@ -1,0 +1,25 @@
+---
+name: "06 'main' branch CI (pull_request:staging)"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - .github/**
+
+jobs:
+  job-main-ci:
+    uses: ${owner_name}/${templates_repository_name}/${ci_template_path}@${template_ref}
+    name: 'CI triggered by PR'
+    secrets:
+      auto_pr_reviewers_app_id: $${{ secrets.GHA_AUTO_PR_REVIEWERS_APP_ID }}
+      auto_pr_reviewers_app_private_key: $${{ secrets.GHA_AUTO_PR_REVIEWERS_APP_PRIVATE_KEY }}
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    with:
+      branch_name: $${{ github.event.pull_request.base.ref }}
+      environment_name_plan: env-${project_name}-$${{ github.event.pull_request.base.ref }}-plan
+      auto_pr_reviewers: 'true'

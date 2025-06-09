@@ -1,0 +1,24 @@
+---
+name: "01 'features/*' branch CI (push)"
+
+on:
+  push:
+    branches:
+      - features/*
+    paths-ignore:
+      - .github/**
+
+jobs:
+  check-ref:
+    uses: ${owner_name}/${templates_repository_name}/${workflow_path}/check-ref.yaml@${template_ref}
+  job-features-ci:
+    uses: ${owner_name}/${templates_repository_name}/${ci_template_path}@${template_ref}
+    name: 'CI'
+    needs: check-ref
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    with:
+      branch_name: $${{ needs.check-ref.outputs.branch_name }}
+      environment_name_plan: env-${project_name}-features-plan

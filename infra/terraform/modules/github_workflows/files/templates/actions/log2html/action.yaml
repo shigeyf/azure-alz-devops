@@ -1,0 +1,32 @@
+name: Text Log to HTML
+description: |
+  This action converts the text log into an HTML format for better readability.
+
+inputs:
+  text_log:
+    description: The path to the text log file.
+    required: true
+  html_output:
+    description: The path to the HTML output file.
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Format tfapply log output to HTML
+      id: apply_log_to_html
+      run: |
+        pip3 install ansi2html
+        echo "Generating HTML file: $${{ inputs.text_log }}"
+        if [ ! -f "$${{ inputs.text_log }}" ]; then
+          echo "Error: Text log not found at $${{ inputs.text_log }}"
+          exit 1
+        fi
+        cat $${{ inputs.text_log }} | ansi2html > $${{ inputs.html_output }}
+        # for debug to check the generated HTML file
+        cat $${{ inputs.html_output }}
+      shell: bash

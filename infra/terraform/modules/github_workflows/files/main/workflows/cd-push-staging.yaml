@@ -1,0 +1,24 @@
+---
+name: "05 'staging' branch CI/CD (push)"
+
+on:
+  push:
+    branches:
+      - staging
+    paths-ignore:
+      - .github/**
+
+jobs:
+  check-ref:
+    uses: ${owner_name}/${templates_repository_name}/${workflow_path}/check-ref.yaml@${template_ref}
+  job-staging-cd:
+    uses: ${owner_name}/${templates_repository_name}/${cd_template_path}@${template_ref}
+    name: 'CI/CD'
+    needs: check-ref
+    permissions:
+      id-token: write
+      contents: read
+    with:
+      branch_name: $${{ needs.check-ref.outputs.branch_name }}
+      environment_name_plan: env-${project_name}-$${{ needs.check-ref.outputs.branch_name }}-plan
+      environment_name_apply: env-${project_name}-$${{ needs.check-ref.outputs.branch_name }}-apply

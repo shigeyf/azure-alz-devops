@@ -1,0 +1,25 @@
+---
+name: "02 'dev' branch CI (pull_request:features/*)"
+
+on:
+  pull_request:
+    branches:
+      - dev
+    paths-ignore:
+      - .github/**
+
+jobs:
+  job-dev-ci:
+    uses: ${owner_name}/${templates_repository_name}/${ci_template_path}@${template_ref}
+    name: 'CI triggered by PR'
+    secrets:
+      auto_pr_reviewers_app_id: $${{ secrets.GHA_AUTO_PR_REVIEWERS_APP_ID }}
+      auto_pr_reviewers_app_private_key: $${{ secrets.GHA_AUTO_PR_REVIEWERS_APP_PRIVATE_KEY }}
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    with:
+      branch_name: $${{ github.event.pull_request.base.ref }}
+      environment_name_plan: env-${project_name}-$${{ github.event.pull_request.base.ref }}-plan
+      auto_pr_reviewers: 'false'

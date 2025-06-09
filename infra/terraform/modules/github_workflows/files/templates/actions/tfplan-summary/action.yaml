@@ -1,0 +1,30 @@
+name: Terraform Plan Summary
+description: |
+  This action generates a summary of the Terraform plan output, including the number of resources added, changed, and deleted.
+
+inputs:
+  tf_plan_json:
+    description: The path to the Terraform plan JSON file.
+    required: true
+  tf_plan_summary_output:
+    description: The path to the Terraform plan summary output file.
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Format tfplan output to HTML
+      id: plan_summary
+      run: |
+        echo "Generating Plan Summary for Terraform plan json: $${{ inputs.tf_plan_json }}"
+        if [ ! -f "$${{ inputs.tf_plan_json }}" ]; then
+          echo "Error: Terraform plan json not found at $${{ inputs.tf_plan_json }}"
+          exit 1
+        fi
+        python3 $${{ github.action_path }}/scripts/generate_tfplan_summary.py \
+        $${{ inputs.tf_plan_json }} $${{ inputs.tf_plan_summary_output }}
+      shell: bash

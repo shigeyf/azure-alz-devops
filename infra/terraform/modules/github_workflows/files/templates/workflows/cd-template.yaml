@@ -1,0 +1,241 @@
+---
+name: Terraform Continuous Deployment
+
+on:
+  workflow_call:
+    inputs:
+      branch_name:
+        description: Branch name
+        default: 'main'
+        type: string
+      environment_name_plan:
+        description: Environment name for Plan
+        default: 'env-${project_name}-default-plan'
+        type: string
+      environment_name_apply:
+        description: Environment name for Apply
+        default: 'env-${project_name}-default-apply'
+        type: string
+      tf_module_root:
+        description: Terraform Module root relative path
+        default: 'infra'
+        type: string
+      tf_cli_version:
+        description: Terraform CLI Version
+        default: 'latest'
+        type: string
+      tf_action:
+        description: Terraform Action to perform
+        default: 'apply'
+        type: string
+
+jobs:
+  plan:
+    name: Terraform plan
+    runs-on: ${runner_runs_on}
+    concurrency:
+      group: 'terraform-$${{ inputs.branch_name }}-tfstate'
+      cancel-in-progress: false
+    environment:
+      name: $${{ inputs.environment_name_plan }}
+      url: https://$${{vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}.blob.core.windows.net/$${{vars.LOG_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}/$${{ inputs.branch_name }}/tfplan.$${{ github.sha }}.html?$${{ steps.storage_upload.outputs.sas_token }}
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_CLIENT_ID: '$${{ vars.AZURE_CLIENT_ID }}'
+      ARM_SUBSCRIPTION_ID: '$${{ vars.AZURE_SUBSCRIPTION_ID }}'
+      ARM_TENANT_ID: '$${{ vars.AZURE_TENANT_ID }}'
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Terraform CLI Install
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+          terraform_version: $${{ inputs.tf_cli_version }}
+      - name: Terraform Init
+        run: |
+          terraform \
+          -chdir="$${{inputs.tf_module_root}}" \
+          init \
+          -backend-config="storage_account_name=$${{vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
+          -backend-config="container_name=$${{vars.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}" \
+          -backend-config="key=$${{ inputs.branch_name }}/terraform.tfstate"
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform \
+          -chdir="$${{inputs.tf_module_root}}" \
+          plan \
+          -var-file="./envs/$${{inputs.branch_name}}/terraform.tfvars" \
+          -out=tfplan \
+          -input=false \
+          -no-color \
+          | tee tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.log
+          exit $${PIPESTATUS[0]}
+      - name: Upload Terraform Plan log as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-log
+          path: ./tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.log
+      - name: Terraform Plan JSON Output
+        run: |
+          terraform -chdir="$${{inputs.tf_module_root}}" show -json tfplan \
+          > tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.json
+      - name: Create Terraform Plan Artifact
+        run: |
+          stagingDirectory="staging"
+          mkdir -p $stagingDirectory
+          tar \
+          --exclude "./.git*" \
+          --exclude "./.terraform" \
+          --exclude "**/.terraform" \
+          --exclude "./$stagingDirectory" \
+          -cp ./* | tar -xv -C ./$stagingDirectory/
+      - name: Publish Terraform Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-artifacts
+          include-hidden-files: true
+          path: ./staging/
+      - name: Generate Terraform Plan Summary for Review (Markdown)
+        uses: ${owner_name}/${templates_repository_name}/${action_path}/tfplan-summary@${template_ref}
+        with:
+          tf_plan_json: 'tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.json'
+          tf_plan_summary_output: 'tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.md'
+      - name: Add Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const prNumber = context.payload.pull_request.number;
+            const planOutput = fs.readFileSync(`tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.md`, 'utf8');
+            const maxCommentLength = 65000;
+            const planOutputBody = planOutput.length > maxCommentLength ? planOutput.substring(0, maxCommentLength) : planOutput;
+            const commentBody = `# Terraform Plan Summay for branch: \`$${{ inputs.branch_name }}\`\n\n$${planOutputBody}\n`;
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: commentBody
+            });
+      - name: Generate Terraform Plan Summary for Review (HTML)
+        uses: ${owner_name}/${templates_repository_name}/${action_path}/tfplan-summary@${template_ref}
+        with:
+          tf_plan_json: 'tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.json'
+          tf_plan_summary_output: 'tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.html'
+      - name: Azure Login with OIDC
+        uses: azure/login@v1
+        with:
+          client-id: $${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: $${{ vars.AZURE_TENANT_ID }}
+          subscription-id: $${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Upload Terraform Plan Summary (HTML) to Azure Storage
+        id: storage_upload
+        run: |
+          end=`date -u -d "1 week" '+%Y-%m-%dT%H:%MZ'`
+          sas_token=$(az storage blob generate-sas \
+          --account-name "$${{ vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" \
+          --container-name "$${{ vars.LOG_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME }}" \
+          --name "$${{ inputs.branch_name }}/tfplan.$${{ github.sha }}.html" \
+          --expiry "$end" \
+          --permissions r \
+          --https-only \
+          --auth-mode login \
+          --as-user | sed 's/"//g')
+          echo "sas_token=$sas_token" >> $GITHUB_OUTPUT
+          az storage blob upload \
+          --account-name "$${{ vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" \
+          --container-name "$${{ vars.LOG_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME }}" \
+          --name "$${{ inputs.branch_name }}/tfplan.$${{ github.sha }}.html" \
+          --file "tfplan.$${{ inputs.branch_name }}.$${{ github.sha }}.html" \
+          --auth-mode login \
+          --overwrite true
+
+  apply:
+    name: Terraform apply
+    runs-on: ${runner_runs_on}
+    concurrency:
+      group: 'terraform-$${{ inputs.branch_name }}-tfstate'
+      cancel-in-progress: false
+    needs: plan
+    environment:
+      name: $${{ inputs.environment_name_apply }}
+      url: https://$${{vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}.blob.core.windows.net/$${{vars.LOG_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}/$${{ inputs.branch_name }}/tfapply.$${{ github.sha }}.html?$${{ steps.storage_upload.outputs.sas_token }}
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      ARM_CLIENT_ID: '$${{ vars.AZURE_CLIENT_ID }}'
+      ARM_SUBSCRIPTION_ID: '$${{ vars.AZURE_SUBSCRIPTION_ID }}'
+      ARM_TENANT_ID: '$${{ vars.AZURE_TENANT_ID }}'
+      ARM_USE_AZUREAD: true
+      ARM_USE_OIDC: true
+      AZAPI_RETRY_GET_AFTER_PUT_MAX_TIME: '60m' # Accounts for eventually consistent management group permissions propagation
+    steps:
+      - name: Download Terraform Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: terraform-plan-artifacts
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+          terraform_version: $${{ inputs.tf_cli_version }}
+      - name: Terraform Init
+        run: |
+          terraform \
+          -chdir="$${{inputs.tf_module_root}}" \
+          init \
+          -backend-config="storage_account_name=$${{vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME}}" \
+          -backend-config="container_name=$${{vars.BACKEND_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME}}" \
+          -backend-config="key=$${{ inputs.branch_name }}/terraform.tfstate"
+      - name: Terraform Apply
+        run: |
+          terraform \
+          -chdir="$${{inputs.tf_module_root}}" \
+          apply \
+          -input=false \
+          -auto-approve \
+          tfplan | tee tfapply.$${{ inputs.branch_name }}.$${{ github.sha }}.log
+          exit $${PIPESTATUS[0]}
+      - name: Upload Terraform Apply Log as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-apply-log
+          path: ./tfapply.$${{ inputs.branch_name }}.$${{ github.sha }}.log
+      - name: Generate Terraform Apply Log HTML
+        uses: ${owner_name}/${templates_repository_name}/${action_path}/log2html@${template_ref}
+        with:
+          text_log: 'tfapply.$${{ inputs.branch_name }}.$${{ github.sha }}.log'
+          html_output: 'tfapply.$${{ inputs.branch_name }}.$${{ github.sha }}.html'
+      - name: Azure Login with OIDC
+        uses: azure/login@v1
+        with:
+          client-id: $${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: $${{ vars.AZURE_TENANT_ID }}
+          subscription-id: $${{ vars.AZURE_SUBSCRIPTION_ID }}
+      - name: Upload Terraform Apply Log to Azure Storage
+        id: storage_upload
+        run: |
+          end=`date -u -d "1 week" '+%Y-%m-%dT%H:%MZ'`
+          sas_token=$(az storage blob generate-sas \
+          --account-name "$${{ vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" \
+          --container-name "$${{ vars.LOG_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME }}" \
+          --name "$${{ inputs.branch_name }}/tfapply.$${{ github.sha }}.html" \
+          --expiry "$end" \
+          --permissions r \
+          --https-only \
+          --auth-mode login \
+          --as-user | sed 's/"//g')
+          echo "sas_token=$sas_token" >> $GITHUB_OUTPUT
+          az storage blob upload \
+          --account-name "$${{ vars.BACKEND_AZURE_STORAGE_ACCOUNT_NAME }}" \
+          --container-name "$${{ vars.LOG_AZURE_STORAGE_ACCOUNT_CONTAINER_NAME }}" \
+          --name "$${{ inputs.branch_name }}/tfapply.$${{ github.sha }}.html" \
+          --file "tfapply.$${{ inputs.branch_name }}.$${{ github.sha }}.html" \
+          --auth-mode login \
+          --overwrite true

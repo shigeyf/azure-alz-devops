@@ -1,0 +1,27 @@
+---
+name: Check Ref Reusable Workflow
+
+on:
+  workflow_call:
+    outputs:
+      branch_name:
+        description: "Return ref branch name or 'default'"
+        value: $${{ jobs.check-ref.outputs.branch_name }}
+
+jobs:
+  check-ref:
+    runs-on: ${runner_runs_on}
+    outputs:
+      branch_name: $${{ steps.set-branch-name.outputs.branch_name }}
+    steps:
+      - id: set-branch-name
+        run: |
+          if [[ "$${GITHUB_REF}" == refs/heads/* ]]; then
+            echo "branch_name=$${{ github.ref_name }}" | sed 's;/;-;g' >> $GITHUB_OUTPUT
+          elif [[ "$${GITHUB_REF}" == refs/pull/* ]]; then
+            echo "branch_name=$${{ github.head_ref }}" >> $GITHUB_OUTPUT
+          elif [[ "$${GITHUB_REF}" == refs/tags/* ]]; then
+            echo "branch_name=default" >> $GITHUB_OUTPUT
+          else
+            echo "branch_name=default" >> $GITHUB_OUTPUT
+          fi
