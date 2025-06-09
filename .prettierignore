@@ -135,3 +135,9 @@ dist
 
 # tempoprary folders
 tmp/
+
+package.json
+infra/terraform/modules/github_workflows/files/main/workflows/pr-branch-validator.yaml
+infra/terraform/modules/github_workflows/files/templates/workflows/cd-template.yaml
+infra/terraform/modules/github_workflows/files/templates/workflows/check-ref.yaml
+infra/terraform/modules/github_workflows/files/templates/workflows/ci-template.yaml
