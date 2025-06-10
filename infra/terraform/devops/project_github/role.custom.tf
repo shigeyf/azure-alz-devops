@@ -14,6 +14,13 @@ resource "azurerm_role_definition" "custom_ra_writer" {
   }
 }
 
+resource "time_sleep" "wait_for_role_propagation" {
+  create_duration = var.role_propagation_time
+  depends_on = [
+    azurerm_role_definition.custom_ra_writer,
+  ]
+}
+
 resource "azurerm_role_assignment" "custom_ra_writer" {
   for_each = {
     for key, ra in local._subscription_role_assignments
@@ -24,6 +31,7 @@ resource "azurerm_role_assignment" "custom_ra_writer" {
   principal_id         = each.value.principal_id
 
   depends_on = [
+    time_sleep.wait_for_role_propagation,
     azurerm_user_assigned_identity.this,
   ]
 }

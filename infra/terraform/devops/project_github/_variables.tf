@@ -46,3 +46,9 @@ variable "use_templates_repository" {
   type        = bool
   default     = false
 }
+
+variable "role_propagation_time" {
+  type        = string
+  description = "Wait seconds to propagate role assignments"
+  default     = "60s"
+}
