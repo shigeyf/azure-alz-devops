@@ -20,7 +20,7 @@ jobs:
           if [[ "$SOURCE_BRANCH" == features/* ]] && [[ "$TARGET_BRANCH" == dev ]]; then
             echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             exit 0
-          else
+          elif [[ "$SOURCE_BRANCH" == features/* ]] && [[ "$TARGET_BRANCH" != dev ]]; then
             echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             echo "[*] 'features/*' branches can only target 'dev' branch."
             exit 1
@@ -30,7 +30,7 @@ jobs:
           if [[ "$SOURCE_BRANCH" == dev ]] && [[ "$TARGET_BRANCH" == staging ]]; then
             echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             exit 0
-          else
+          elif [[ "$SOURCE_BRANCH" == dev ]] && [[ "$TARGET_BRANCH" != staging ]]; then
             echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             echo "[*] 'dev' branches can only target 'staging' branch."
             exit 1
@@ -40,7 +40,7 @@ jobs:
           if [[ "$SOURCE_BRANCH" == staging ]] && [[ "$TARGET_BRANCH" == main ]]; then
             echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             exit 0
-          else
+          elif [[ "$SOURCE_BRANCH" == staging ]] && [[ "$TARGET_BRANCH" != main ]]; then
             echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             echo "[*] 'staging' branches can only target 'main' branch."
             exit 1
