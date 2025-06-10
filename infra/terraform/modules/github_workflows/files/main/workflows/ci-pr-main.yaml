@@ -22,4 +22,4 @@ jobs:
     with:
       branch_name: $${{ github.event.pull_request.base.ref }}
       environment_name_plan: env-${project_name}-$${{ github.event.pull_request.base.ref }}-plan
-      auto_pr_reviewers: 'true'
+      auto_pr_reviewers: $${{ vars.ENABLE_AUTO_PR_REVIEWERS }}

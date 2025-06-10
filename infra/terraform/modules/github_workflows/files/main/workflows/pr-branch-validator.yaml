@@ -17,21 +17,30 @@ jobs:
           TARGET_BRANCH="$${{ github.event.pull_request.base.ref }}"
 
           # 1. PR from features/* branches
-          if [[ "$SOURCE_BRANCH" == features/* ]] && [[ "$TARGET_BRANCH" != dev ]]; then
+          if [[ "$SOURCE_BRANCH" == features/* ]] && [[ "$TARGET_BRANCH" == dev ]]; then
+            echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            exit 0
+          else
             echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             echo "[*] 'features/*' branches can only target 'dev' branch."
             exit 1
           fi
 
           # 2. PR from dev branch
-          if [[ "$SOURCE_BRANCH" == dev ]] && [[ "$TARGET_BRANCH" != staging ]]; then
+          if [[ "$SOURCE_BRANCH" == dev ]] && [[ "$TARGET_BRANCH" == staging ]]; then
+            echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            exit 0
+          else
             echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             echo "[*] 'dev' branches can only target 'staging' branch."
             exit 1
           fi
 
           # 3. PR from staging branch
-          if [[ "$SOURCE_BRANCH" == staging ]] && [[ "$TARGET_BRANCH" != main ]]; then
+          if [[ "$SOURCE_BRANCH" == staging ]] && [[ "$TARGET_BRANCH" == main ]]; then
+            echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            exit 0
+          else
             echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
             echo "[*] 'staging' branches can only target 'main' branch."
             exit 1
@@ -47,6 +56,9 @@ jobs:
           # 5. PR from maintain-workflow branch (for workflow maintenance)
           if [[ "$SOURCE_BRANCH" == maintain-workflow ]]; then
             echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+            exit 0
           fi
 
-          echo "✅ Allowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+          echo "🚫 Disallowed Pull Request: $SOURCE_BRANCH -> $TARGET_BRANCH"
+          echo "[*] 'staging' branches can only target 'main' branch."
+          exit 1

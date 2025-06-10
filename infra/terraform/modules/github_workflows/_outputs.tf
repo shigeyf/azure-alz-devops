@@ -40,6 +40,10 @@ output "branch_rules" {
   value = local.branch_rules
 }
 
+output "repo_variables" {
+  value = local.repo_variables
+}
+
 /*
 For Debug
 
