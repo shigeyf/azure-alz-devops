@@ -22,7 +22,11 @@ module "github" {
   environments         = local.github_environments
 
   // Variables
-  variables = concat(local.tfstate_backend_variables, local.azure_subscription_variables)
+  variables = concat(
+    local.tfstate_backend_variables,
+    local.azure_subscription_variables,
+    module.workflow.repo_variables
+  )
 
   // GitHub Runners
   agent_pool_name        = ""
