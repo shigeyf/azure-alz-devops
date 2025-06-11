@@ -27,14 +27,19 @@ variable "tags" {
   default     = {}
 }
 
-variable "enable_private_network" {
-  description = "Enable private network for the self-hosted agent resources"
-  type        = bool
-  default     = false
-}
-
 variable "enable_self_hosted_agents" {
   description = "Enable self-hosted agents"
   type        = bool
   default     = false
+}
+
+variable "enable_private_network" {
+  description = "Enable private network for the self-hosted agent resources"
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = var.enable_private_network == false || (var.enable_self_hosted_agents == true && var.enable_private_network == true)
+    error_message = "Private network can only be enabled if self-hosted agents are enabled"
+  }
 }
