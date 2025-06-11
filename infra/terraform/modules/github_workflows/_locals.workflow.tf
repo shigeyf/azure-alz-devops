@@ -15,7 +15,9 @@ locals {
 }
 
 locals {
-  runner_runs_on = var.runner_group_name != "" ? "group: ${var.runner_group_name}" : "ubuntu-latest"
+  github_hosted_runner = var.runner_group_name != "" ? "group: ${var.runner_group_name}" : "ubuntu-latest"
+  self_hosted_runner   = var.runner_group_name != "" ? "group: ${var.runner_group_name}" : "[self-hosted, linux]"
+  runner_runs_on       = var.use_self_hosted_runners ? local.self_hosted_runner : local.github_hosted_runner
 }
 
 locals {

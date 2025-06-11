@@ -32,8 +32,14 @@ variable "use_templates_repository" {
   default     = false
 }
 
+variable "use_self_hosted_runners" {
+  description = "Use self-hosted runners"
+  type        = bool
+  default     = false
+}
+
 variable "runner_group_name" {
-  description = "Name of the GitHub Runner"
+  description = "Name of the GitHub Runner Group"
   type        = string
   default     = ""
 }
