@@ -16,12 +16,6 @@ variable "runner_pat_secret_id" {
   type        = string
 }
 
-variable "runner_scope" {
-  description = "GitHub Runner Scope"
-  type        = string
-  default     = "repo"
-}
-
 variable "secret_reader_uami_id" {
   description = "User-assigned Managed Identity Id to read Key Vault secrets"
   type        = string

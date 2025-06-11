@@ -46,21 +46,21 @@ locals {
     {
       secret        = false
       name          = "RUNNER_NAME_PREFIX"
-      value         = local.runner_name
+      value         = "runner-{project_name}-{random}"
       kv_secret_id  = ""
       keda_metadata = ""
     },
     {
       secret        = false
       name          = "RUNNER_GROUP"
-      value         = local.runner_group_name
+      value         = "{runner_group_name}"
       kv_secret_id  = ""
       keda_metadata = ""
     },
     {
       secret        = false
       name          = "RUNNER_SCOPE"
-      value         = var.runner_scope
+      value         = "{runner_scope}"
       kv_secret_id  = ""
       keda_metadata = "runnerScope"
     },
