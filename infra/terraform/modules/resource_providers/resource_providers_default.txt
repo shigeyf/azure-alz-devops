@@ -1,0 +1,17 @@
+These resource providers are registered in a new Azure Subscription by default:
+
+"Microsoft.ADHybridHealthService",
+"Microsoft.Authorization",
+"Microsoft.Billing",
+"Microsoft.ClassicSubscription",
+"Microsoft.Commerce",
+"Microsoft.Consumption",
+"Microsoft.CostManagement",
+"Microsoft.Features",
+"Microsoft.MarketplaceOrdering",
+"Microsoft.Portal",
+"Microsoft.ResourceGraph",
+"Microsoft.ResourceNotifications",
+"Microsoft.Resources",
+"Microsoft.SerialConsole",
+"microsoft.support",
