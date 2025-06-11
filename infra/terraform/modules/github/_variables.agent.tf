@@ -1,13 +1,13 @@
 // _variables.agent.tf
 
-variable "agent_pool_name" {
-  description = "Name of the agent pool"
-  type        = string
-  default     = "self-hosted"
-}
+#variable "use_self_hosted_runners" {
+#  description = "Use self-hosted runners"
+#  type        = bool
+#  default     = false
+#}
 
-variable "use_self_hosted_agents" {
-  description = "Use self-hosted agents"
-  type        = bool
-  default     = false
+variable "runner_group_name" {
+  description = "Name of the GitHub Runner Group"
+  type        = string
+  default     = ""
 }

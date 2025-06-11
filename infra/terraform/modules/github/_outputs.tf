@@ -23,5 +23,5 @@ output "federations" {
 }
 
 output "agent_pool_name" {
-  value = var.use_self_hosted_agents ? github_actions_runner_group.this[0].name : null
+  value = length(github_actions_runner_group.this) > 0 ? github_actions_runner_group.this[0].name : null
 }
