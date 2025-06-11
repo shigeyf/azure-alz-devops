@@ -62,3 +62,8 @@ variable "container_src_docker_file" {
   type        = string
   default     = "dockerfile"
 }
+
+variable "acr_login_server" {
+  description = "Azure Container Registry login server"
+  type        = string
+}
