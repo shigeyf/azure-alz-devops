@@ -6,7 +6,7 @@ locals {
 
   _secrets = [
     for v in local.environment_variables : {
-      name                = v.name,
+      name                = v.value,
       identity            = var.secret_reader_uami_id,
       key_vault_secret_id = v.kv_secret_id
     } if v.secret == true
@@ -44,8 +44,11 @@ output "container" {
         name   = var.container_image_name
         cpu    = var.container_cpu
         memory = "${var.container_memory}Gi"
-        image  = local._container_image_name
-        env    = [for v in local.environment_variables : { name = v.name, value = v.value }]
+        image  = "${var.acr_login_server}/${local._container_image_name}"
+        env = concat(
+          [for v in local.environment_variables : { name = v.name, secret_name = v.value } if v.secret == true],
+          [for v in local.environment_variables : { name = v.name, value = v.value } if v.secret == false],
+        )
       }
       scale_rules = local._keda_scaler_rule
       secrets     = local._secrets

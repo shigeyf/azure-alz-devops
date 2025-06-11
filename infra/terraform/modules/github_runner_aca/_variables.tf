@@ -69,9 +69,13 @@ variable "container_src_docker_root" {
   default     = "github-runner-aca"
 }
 
-
 variable "container_src_docker_file" {
   description = "Docker file for building the container image"
   type        = string
   default     = "dockerfile"
+}
+
+variable "acr_login_server" {
+  description = "Azure Container Registry login server"
+  type        = string
 }

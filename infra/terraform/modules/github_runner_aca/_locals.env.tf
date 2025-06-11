@@ -45,15 +45,15 @@ locals {
     },
     {
       secret        = false
-      name          = "RUNNER_GROUP"
-      value         = local.runner_group_name
+      name          = "RUNNER_NAME_PREFIX"
+      value         = local.runner_name
       kv_secret_id  = ""
       keda_metadata = ""
     },
     {
       secret        = false
-      name          = "RUNNER_NAME_PREFIX"
-      value         = local.runner_name
+      name          = "RUNNER_GROUP"
+      value         = local.runner_group_name
       kv_secret_id  = ""
       keda_metadata = ""
     },
@@ -66,8 +66,15 @@ locals {
     },
     {
       secret        = false
-      name          = "REPO_URL"
+      name          = "REPO_NAME"
       value         = "{project_name}"
+      kv_secret_id  = ""
+      keda_metadata = "repos"
+    },
+    {
+      secret        = false
+      name          = "REPO_URL"
+      value         = "https://github.com/${var.organization_name}/{project_name}"
       kv_secret_id  = ""
       keda_metadata = ""
     },
