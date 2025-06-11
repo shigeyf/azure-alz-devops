@@ -7,6 +7,7 @@ module "azuredevops_agent_aca" {
   organization_url_secret_id = azurerm_key_vault_secret.azuredevops[local.vcs_secret_azuredevops_organization_url].versionless_id
   agent_pat_secret_id        = azurerm_key_vault_secret.azuredevops[local.vcs_secret_azuredevops_personal_access_token_agent].versionless_id
   secret_reader_uami_id      = azurerm_user_assigned_identity.container_run[0].id
+  acr_login_server           = module.acr[0].output.acr_login_server
 }
 
 module "github_runner_aca" {
@@ -17,6 +18,7 @@ module "github_runner_aca" {
   enterprise_name       = var.github_enterprise_name
   runner_pat_secret_id  = azurerm_key_vault_secret.github[local.vcs_secret_github_personal_access_token_agent].versionless_id
   secret_reader_uami_id = azurerm_user_assigned_identity.container_run[0].id
+  acr_login_server      = module.acr[0].output.acr_login_server
 }
 
 module "azuredevops_agent_aci" {
