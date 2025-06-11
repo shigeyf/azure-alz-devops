@@ -1,7 +1,7 @@
 // container_app_job.event.tf
 
 resource "azurerm_container_app_job" "event" {
-  for_each                     = { for job in nonsensitive(var.event_jobs) : job.event_job_name => job }
+  for_each                     = { for key, job in nonsensitive(var.event_jobs) : key => job }
   name                         = each.value.event_job_name
   location                     = var.location
   resource_group_name          = var.resource_group_name

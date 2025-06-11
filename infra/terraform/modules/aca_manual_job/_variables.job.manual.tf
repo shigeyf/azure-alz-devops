@@ -1,7 +1,7 @@
 // _variables.job.manual.tf
 
 variable "manual_jobs" {
-  type = set(
+  type = list(
     object({
       manual_job_name                 = string
       replica_timeout                 = optional(number, 300)

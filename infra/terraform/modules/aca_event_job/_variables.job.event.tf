@@ -1,7 +1,7 @@
 // _variables.job.event.tf
 
 variable "event_jobs" {
-  type = set(
+  type = list(
     object({
       event_job_name                 = string
       replica_timeout                = optional(number, 1800)

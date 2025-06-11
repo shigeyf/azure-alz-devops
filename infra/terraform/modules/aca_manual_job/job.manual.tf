@@ -1,7 +1,7 @@
 // container_app_job.manual.tf
 
 resource "azurerm_container_app_job" "manual" {
-  for_each                     = { for job in nonsensitive(var.manual_jobs) : job.manual_job_name => job }
+  for_each                     = { for key, job in nonsensitive(var.manual_jobs) : key => job }
   name                         = each.value.manual_job_name
   location                     = var.location
   resource_group_name          = var.resource_group_name
