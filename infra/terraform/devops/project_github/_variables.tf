@@ -65,7 +65,7 @@ variable "use_self_hosted_runners" {
   default     = false
 
   validation {
-    condition     = var.use_self_hosted_runners == false || var.use_self_hosted_runners && local.options.self_hosted_enabled
-    error_message = "Self-hosted GitHub Runners can only be enabled if the 'self_hosted_enabled' option in the DevOps deployment configuration is true."
+    condition     = var.use_self_hosted_runners == false && local.options.private_network_enabled == false || var.use_self_hosted_runners == true && local.options.self_hosted_enabled == true
+    error_message = "Self-hosted GitHub Runners can only be enabled if the 'self_hosted_enabled' option in the DevOps deployment configuration is true, and Self-hosted GitHub Runners cannot be enabled if the 'private_network_enabled' option is true."
   }
 }
