@@ -2,7 +2,8 @@
 
 locals {
   # Terraform AzureRM ~2.4.30
-  # This logic is for a bug on 'infrastructure_resource_group_name' property
+  # There is a bug on 'infrastructure_resource_group_name' property configuration
+  # when passing a null value with non-null infrastructure_subnet_id value.
   _location = lower(replace(var.location, " ", ""))
   infrastructure_resource_group_name = (
     var.container_app_infra_resource_group_name != null
@@ -30,8 +31,4 @@ resource "azurerm_container_app_environment" "this" {
     maximum_count         = var.workload_maximum_count
     minimum_count         = var.workload_minimum_count
   }
-
-  depends_on = [
-    azurerm_resource_provider_registration.this,
-  ]
 }
