@@ -45,9 +45,11 @@ output "container_specs" {
 
 output "options" {
   value = {
-    enable_azuredevops        = var.enable_azuredevops
-    enable_github             = var.enable_github
-    enable_self_hosted_agents = var.enable_self_hosted_agents
+    enable_azuredevops      = var.enable_azuredevops
+    enable_github           = var.enable_github
+    self_hosted_enabled     = var.enable_self_hosted_agents
+    private_network_enabled = var.enable_private_network
+
     azuredevops = {
       organization_name     = var.azuredevops_organization_name
       personal_access_token = local.vcs_secret_azuredevops_personal_access_token
