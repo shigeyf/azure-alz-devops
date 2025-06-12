@@ -28,12 +28,12 @@ locals {
     {
       secret = false
       name   = "AZP_POOL"
-      value  = local.agent_pool_name
+      value  = "default-pool-{project_name}-{random}"
     },
     {
       secret = false
       name   = "AZP_AGENT_NAME"
-      value  = local.agent_name
+      value  = "agent-{project_name}-{random}-{number}"
     },
   ]
 }

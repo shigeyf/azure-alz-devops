@@ -1,16 +1,5 @@
 // _variables.tf
 
-variable "organization_name" {
-  description = "GitHub Organization name"
-  type        = string
-}
-
-#variable "enterprise_name" {
-#  description = "GitHub Enterprise name"
-#  type        = string
-#  default     = ""
-#}
-
 variable "runner_pat_secret_id" {
   description = "GitHub Runner PAT (Personal Access Token) secret Id"
   type        = string

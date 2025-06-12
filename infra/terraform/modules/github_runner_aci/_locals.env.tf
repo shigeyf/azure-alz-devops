@@ -29,17 +29,17 @@ locals {
     {
       secret = false
       name   = "GH_RUNNER_URL"
-      value  = "https://github.com/${var.organization_name}/{project_name}"
+      value  = "https://github.com/{runner_scope_name}"
     },
     {
       secret = false
       name   = "GH_RUNNER_NAME"
-      value  = local.runner_name
+      value  = "runner-{project_name}-{random}-{index}"
     },
     {
       secret = false
       name   = "GH_RUNNER_GROUP"
-      value  = local.runner_group_name
+      value  = "{runner_group_name}"
     },
     {
       secret = false
