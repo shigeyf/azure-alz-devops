@@ -1,4 +1,4 @@
-// github.runner.tf
+// github.runner.aca.tf
 
 locals {
   runners = (var.use_self_hosted_runners
