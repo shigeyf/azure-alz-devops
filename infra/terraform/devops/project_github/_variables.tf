@@ -17,6 +17,12 @@ variable "devops_tfstate_key" {
   default     = "devopslz.terraform.tfstate"
 }
 
+variable "role_propagation_time" {
+  type        = string
+  description = "Wait seconds to propagate role assignments"
+  default     = "60s"
+}
+
 variable "project_name" {
   description = "Name of the project"
   type        = string
@@ -47,8 +53,19 @@ variable "use_templates_repository" {
   default     = false
 }
 
-variable "role_propagation_time" {
-  type        = string
-  description = "Wait seconds to propagate role assignments"
-  default     = "60s"
+variable "use_runner_group" {
+  description = "Whether to use a GitHub Runner Group"
+  type        = bool
+  default     = false
+}
+
+variable "use_self_hosted_runners" {
+  description = "Enable self-hosted runners"
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = var.use_self_hosted_runners == false || var.use_self_hosted_runners && local.options.self_hosted_enabled
+    error_message = "Self-hosted GitHub Runners can only be enabled if the 'self_hosted_enabled' option in the DevOps deployment configuration is true."
+  }
 }

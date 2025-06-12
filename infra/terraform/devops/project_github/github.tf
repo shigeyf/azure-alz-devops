@@ -29,6 +29,5 @@ module "github" {
   )
 
   // GitHub Runners
-  agent_pool_name        = ""
-  use_self_hosted_agents = false
+  runner_group_name = local.runner_group_name
 }

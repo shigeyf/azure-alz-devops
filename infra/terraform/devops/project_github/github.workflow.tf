@@ -8,6 +8,8 @@ module "workflow" {
   repository_name           = local.repository_name
   templates_repository_name = local.templates_repository_name
   use_templates_repository  = var.use_templates_repository
+  use_self_hosted_runners   = var.use_self_hosted_runners
+  runner_group_name         = local.runner_group_name
 }
 
 locals {

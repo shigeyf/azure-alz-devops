@@ -19,5 +19,5 @@ data "azurerm_key_vault_secret" "github_pat" {
 provider "github" {
   token    = data.azurerm_key_vault_secret.github_pat.value
   owner    = local.options.github.organization_name
-  base_url = local.options.enable_github ? module.github.api_base_url : ""
+  base_url = module.github.api_base_url
 }
