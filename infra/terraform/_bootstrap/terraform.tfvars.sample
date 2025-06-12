@@ -1,0 +1,35 @@
+// terraform.tfvars.sample
+
+# Azure Subscription Id for deploying DevOps Landing Zone
+target_subscription_id = "<your Azure Subscription Id for DevOps>"
+
+# Suffix for resource naming
+naming_suffix = ["alz", "devops", "bootstrap"]
+
+# Location in where DevOps resources are deployed
+location = "japaneast"
+
+# Resource Tags
+tags = { appTag = "bootstrap", envTag = "prod", projectTag = "devops", purposeTag = "alz", }
+
+# Blob Container name for Terraform state files (*.tfstate) of Bootstrap and DevOps resources
+tfstate_container_name = "tfstate"
+
+# Enable User-assigned Identity for Bootstrap resources
+enable_user_assigned_identity = false
+
+# Enable Customer-Managed Key (CMK) for Blob Storage (tfstate)
+enable_storage_customer_managed_key = true
+
+# Policy for Customer-Managed Key
+customer_managed_key_policy = {
+  key_type = "RSA"
+  key_size = 4096
+  rotation_policy = {
+    automatic = {
+      time_before_expiry = "P30D"
+    }
+    expire_after         = "P90D"
+    notify_before_expiry = "P29D"
+  }
+}
