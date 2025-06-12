@@ -32,8 +32,8 @@ locals {
   )
 }
 
-module "runner" {
-  count                             = var.use_self_hosted_runners ? 1 : 0
+module "github_runner_aca" {
+  count                             = var.use_self_hosted_runners && var.self_hosted_runners_type == "aca" ? 1 : 0
   source                            = "../../modules/aca_event_job"
   resource_group_name               = local.agents_resource_group_name
   location                          = var.location

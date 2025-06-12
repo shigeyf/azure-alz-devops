@@ -16,12 +16,15 @@ locals {
       replace(
         replace(
           replace(
-            jsonencode(data.terraform_remote_state.devops.outputs),
-            "{project_name}", var.project_name
+            replace(
+              jsonencode(data.terraform_remote_state.devops.outputs),
+              "{project_name}", var.project_name
+            ),
+            "{random}", local.rand_id
           ),
-          "{random}", local.rand_id
+          "{runner_scope}", local.runner_scope
         ),
-        "{runner_scope}", local.runner_scope
+        "{runner_scope_name}", local.runner_scope_name
       ),
       "{runner_group_name}", local.runner_group_name
     )
@@ -40,6 +43,7 @@ locals {
   container_run_managed_identity_id   = local._devops_outputs.devops_agents.container_run_uami_id
   container_app_environment_id        = local._devops_outputs.devops_agents.container_app_environment_id
   container_app_workload_profile_name = local._devops_outputs.devops_agents.container_app_workload_profile_name
+  container_instance_subnet_id        = local._devops_outputs.devops_network.aci_subnet_id
 }
 
 // For debug

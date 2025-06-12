@@ -69,3 +69,14 @@ variable "use_self_hosted_runners" {
     error_message = "Self-hosted GitHub Runners can only be enabled if the 'self_hosted_enabled' option in the DevOps deployment configuration is true, and Self-hosted GitHub Runners cannot be enabled if the 'private_network_enabled' option is true."
   }
 }
+
+variable "self_hosted_runners_type" {
+  description = "Type of self-hosted runners to use"
+  type        = string
+  default     = "aca"
+
+  validation {
+    condition     = var.self_hosted_runners_type == "aci" || var.self_hosted_runners_type == "aca"
+    error_message = "Self-hosted runners type must be either 'aci' or 'aca'."
+  }
+}
