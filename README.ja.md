@@ -6,13 +6,13 @@
 
 ## 概要
 
-このリポジトリは、Terraform と CI/CD ワークフローを使用して Azure リソースをデプロイおよび管理するための、包括的なモジュール型の Infrastructure as Code ソリューションを提供します。Azure DevOps と GitHub ベースの CI/CD ワークフローの両方をサポートするように設計されており、組織は Git でバージョン管理された Infrastructure as Code を使用して、安全でスケーラブル、かつポリシーに準拠したクラウド環境のプロビジョニングを自動化できます。
+このリポジトリは、Terraform と CI/CD ワークフローを使用して Azure リソースをデプロイおよび管理するための、包括的なモジュール型の Infrastructure as Code ソリューションを提供します。Azure DevOps と GitHub ベースの CI/CD ワークフローの両方をサポートするように設計されており、組織は Git でバージョン管理された Infrastructure as Code を使用して、安全でスケーラブル、かつポリシーに準拠したクラウド環境のプロビジョニングを自動化できます。このモジュールによって提供されるプロジェクト Git リポジトリは、エンタープライズ環境で使用するように設計されており、Azure および Terraform のベスト プラクティスに準拠しています。
 
 主な機能は次のとおりです。
 
 - **モジュール型の Terraform アーキテクチャ**： 一般的な Azure および DevOps パターン用の再利用可能なモジュール
 - **Azure DevOps と GitHub のサポート**： プロジェクト、リポジトリ、パイプライン、および、セルフホステッドエージェント/ランナーのプロビジョニング
-- **安全な状態とシークレットの管理**： Azure Storage と Key Vault を使用して、Terraform の状態と機密情報を管理します
+- **セキュアな状態とシークレットの管理**： Azure Storage と Key Vault を使用して、Terraform の状態と機密情報を管理します
 - **エンタープライズ対応**： デプロイメントタスク実行におけるセキュアなクローズドネットワーク、ID、リポジトリポリシー適用のためのベストプラクティスを実装しています
 - **拡張性とカスタマイズ性**： さまざまな組織の要件やクラウドガバナンスモデルに容易に適応できます
 
@@ -144,6 +144,10 @@ terraform init -migrate-state
 
 ブートストラップ モジュールの展開が完了したら、次に、DevOps ランディングゾーン リソースのプロビジョニングを行います。
 
+> [!NOTE]
+>
+> このステップで使用するすべての機密情報 (GitHub PAT など) は Bootstrap の Azure Key Vault で管理されます。
+
 ```bash
 cd $ProjectRoot/infra/terraform/devops/lz
 ```
@@ -265,6 +269,66 @@ terraform init -backend-config ../../_bootstrap/devops.azurerm.tfbackend -backen
 terraform plan
 terraform apply
 ```
+
+<a id="contents"></a>
+
+## このリポジトリの内容
+
+<a id="contents-dir-structure"></a>
+
+### ディレクトリ構成
+
+```text
+infra/
+└── terraform/
+    ├── _bootstrap/
+    ├── _setup_subscriptions/
+    ├── devops/
+    │   ├── lz/
+    │   └── project_github/
+    └── modules/
+```
+
+<a id="contents-bootstrap"></a>
+
+### 1. Bootstrap リソース モジュール (`infra/terraform/_bootstrap/`)
+
+このフォルダには、Terraform 状態管理とセキュアなシークレット保管に必要な基本的なブートストラップとなる Azure リソースのための Terraform コードと構成ファイルが含まれています。このモジュールでプロビジョニングされるリソースには以下が含まれます。
+
+- Terraform 状態管理のための Azure Storage Account
+- シークレットの保管のための Azure Key Vault
+
+<a id="contents-devops"></a>
+
+### 2. DevOps リソース モジュール (`infra/terraform/devops/`)
+
+このフォルダには、DevOps リソースをプロビジョニングするための、環境固有およびプロジェクト固有の Terraform 構成が含まれています。このフォルダには、以下のサブフォルダが含まれます：
+
+- `lz/`: ランディングゾーン リソース
+  - Azure DevOps と GitHub Actions の両方に対応する、ネットワーク、アイデンティティ、セルフホステッド エージェント/ランナーのインフラストラクチャが含まれます。
+- `project_github/`: プロジェクトレベルのリソース
+  - GitHub ベースの Terraform IaC コードを管理する CI/CD プロジェクトのリソース (リポジトリ、ランナー、ワークフロー設定など) が含まれます。
+
+<a id="contents-reusable-modules"></a>
+
+### 3. `modules/`
+
+一般的なインフラストラクチャ パターンに対応する再利用可能な Terraform モジュールのコレクション。以下が含まれます。
+
+- `aca_env/`、`aca_event_job/`、`aca_manual_job/`: Azure Container Apps 環境とジョブのモジュール
+- `aci/`: Azure Container Instances のモジュール
+- `azure_devops/`、`azure_devops_agent_aca/`、`azure_devops_agent_aci/`、`azure_devops_pipelines/`: Azure DevOps プロジェクト、エージェント、パイプライン用のモジュール
+- `github/`、`github_runner_aca/`、`github_runner_aci/`、`github_workflows/`: GitHub リポジトリ、セルフホステッド ランナー (ACA/ACI 上)、ワークフロー自動化用のモジュール
+- `resource_providers/`: Azure リソース プロバイダーの登録と管理のモジュール (リファレンス実装のみでこのプロジェクトでは利用しない)
+
+> [!NOTE]
+> Terraform の `azurerm_resource_provider_registration` には、登録済みの Azure リソースプロバイダーを読み込むためのモジュールが用意されていません。Azure リソースプロバイダーの登録と登録解除は、複数の Terraform プロジェクトデプロイメント間で競合する可能性があり、またリソースプロバイダーの Terraform 状態管理も難しいため、使用すべきではありません。
+
+<a id="acknowledgements"></a>
+
+## 謝辞
+
+このプロジェクトは [Azure Landing Zone Accelerator](https://github.com/Azure/alz-terraform-accelerator) プロジェクトから着想を得ています。[Azure Landing Zone Accelerator](https://github.com/Azure/alz-terraform-accelerator) プロジェクトは Azure Landing Zone デプロイメント専用の DevOps リソースに焦点を当てていますが、このプロジェクトは一般的な Azure デプロイメント プロジェクトに焦点を当てています。[Jared Holgate](https://github.com/jaredfholgate) 氏、および、プロジェクトの貢献者およびチーム メンバーの皆様に感謝申し上げます。
 
 <a id="contributing"></a>
 

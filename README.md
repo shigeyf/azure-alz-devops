@@ -7,6 +7,7 @@
 ## Overview
 
 This repository provides a comprehensive, modular infrastructure-as-code solution for deploying and managing Azure resources with using Terraform and CI/CD workflows. This is designed to support both Azure DevOps and GitHub-based CI/CD workflows, enabling organizations to automate the provisioning of secure, scalable, and policy-compliant cloud environments using infrastructure as code, versioned with Git.
+The project Git repository which is provisined by this module is designed to be used in enterprise environments and follows Azure and Terraform best practices.
 
 Key features include:
 
@@ -155,6 +156,10 @@ cd $ProjectRoot/infra/terraform/devops/lz
 
 For provisioning the DevOps Landing Zone resources, refer to the sample parameters file ([`infra/terraform/devops/lz/terraform.tfvars.sample`](./infra/terraform/devops/lz/terraform.tfvars.sample)).
 
+> [!NOTE]
+>
+> All sensitive values (such as PATs) which are used in this step are managed in Bootstrap's Azure Key Vault.
+
 ```bash
 cp terraform.tfvars.sample terraform.tfvars
 ```
@@ -268,6 +273,64 @@ terraform init -backend-config ../../_bootstrap/devops.azurerm.tfbackend -backen
 terraform plan
 terraform apply
 ```
+
+<a id="contents"></a>
+
+## Contents of this repository
+
+<a id="contents-dir-structure"></a>
+
+### Directory Structure
+
+```text
+infra/
+└── terraform/
+    ├── _bootstrap/
+    ├── _setup_subscriptions/
+    ├── devops/
+    │   ├── lz/
+    │   └── project_github/
+    └── modules/
+```
+
+<a id="contents-bootstrap"></a>
+
+### 1. Bootstrap Resource module (`infra/terraform/_bootstrap/`)
+
+This folder contains Terraform code and configuration files for bootstrapping the foundational Azure resources required for state management and secure secret storage, such as:
+
+- Storage accounts for Terraform state
+- Key Vaults for secrets
+
+<a id="contents-devops"></a>
+
+### 2. DevOps Resource module (`infra/terraform/devops/`)
+
+This folder contains environment-specific and project-specific Terraform configurations for provisioning DevOps resources. Key subfolders include:
+
+- `lz/`: Landing Zone resources, including networking, identity, and self-hosted agents/runners infrastructure for both Azure DevOps and GitHub Actions.
+- `project_github/`: Project-level resources for GitHub-based CI/CD, including repository, runner, and workflow setup.
+
+<a id="contents-reusable-modules"></a>
+
+### 3. `modules/`
+
+A collection of reusable Terraform modules for common infrastructure patterns, including:
+
+- `aca_env/`, `aca_event_job/`, `aca_manual_job/`: Modules for Azure Container Apps environments and jobs.
+- `aci/`: Azure Container Instances.
+- `azure_devops/`, `azure_devops_agent_aca/`, `azure_devops_agent_aci/`, `azure_devops_pipelines/`: Modules for Azure DevOps projects, agents, and pipelines.
+- `github/`, `github_runner_aca/`, `github_runner_aci/`, `github_workflows/`: Modules for GitHub repositories, self-hosted runners (on ACA/ACI), and workflow automation.
+- `resource_providers/`: Registration and management of Azure resource providers.
+
+> [!NOTE]
+> Terraform `azurerm_resource_provider_registration` does not provide a module for loading already registered Azure resource providers. Registration and un-registration of the Azure resource providers are likely conflicting between multiple Terraform project deployments, and Terraform state management for resource providers is also difficult, so it should not be used.
+
+<a id="acknowledgements"></a>
+
+## Acknowledgements
+
+This project is insipred by the [Azure Landing Zone Accelerator](https://github.com/Azure/alz-terraform-accelerator) project. The [Azure Landing Zone Accelerator](https://github.com/Azure/alz-terraform-accelerator) project is focusing on the DevOps resources only for Azure Landing Zone deployment, while this project is focusing on a generic Azure deployment project. Thanks to [Jared Holgate](https://github.com/jaredfholgate) and contributors and team members of [Azure Landing Zone Accelerator](https://github.com/Azure/alz-terraform-accelerator) project.
 
 <a id="contributing"></a>
 
