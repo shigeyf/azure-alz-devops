@@ -3,5 +3,11 @@
     "**/azure_devops_pipelines/**/*.yaml": "azure-pipelines",
     "**/github_workflows/**/*.yaml": "github-actions-workflow",
     "**/terraform.tfvars.sample": "terraform-vars"
+  },
+  "markdownlint.config": {
+    "MD028": false,
+    "MD033": {
+      "allowed_elements": ["a"]
+    }
   }
 }
