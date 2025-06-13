@@ -14,6 +14,7 @@ variable "target_subscription_id" {
 variable "naming_suffix" {
   description = "Resource naming suffix for the deployed resources"
   type        = list(string)
+  default     = ["alz", "devops"]
 }
 
 variable "location" {
@@ -30,13 +31,13 @@ variable "tags" {
 variable "enable_self_hosted_agents" {
   description = "Enable self-hosted agents"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "enable_private_network" {
   description = "Enable private network for the self-hosted agent resources"
   type        = bool
-  default     = false
+  default     = true
 
   validation {
     condition     = var.enable_private_network == false || (var.enable_self_hosted_agents == true && var.enable_private_network == true)

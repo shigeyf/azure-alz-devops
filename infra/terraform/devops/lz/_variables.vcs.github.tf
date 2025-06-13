@@ -3,12 +3,13 @@
 variable "enable_github" {
   description = "Enable GitHub"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "github_organization_name" {
   description = "GitHub organization name"
   type        = string
+  default     = ""
 
   validation {
     condition     = var.enable_github == false ? true : var.github_organization_name != ""
@@ -17,13 +18,13 @@ variable "github_organization_name" {
 }
 
 variable "github_enterprise_name" {
-  description = "GitHub enterprise name"
+  description = "GitHub enterprise name (currently not supported)"
   type        = string
   default     = ""
 }
 
 variable "github_personal_access_token" {
-  description = "GitHub PAT (Personal Access Token) for deployment"
+  description = "GitHub PAT (Personal Access Token) for project resource deployment"
   type        = string
   default     = ""
 
