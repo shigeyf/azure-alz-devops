@@ -1,6 +1,7 @@
 {
   "files.associations": {
     "**/azure_devops_pipelines/**/*.yaml": "azure-pipelines",
-    "**/github_workflows/**/*.yaml": "github-actions-workflow"
+    "**/github_workflows/**/*.yaml": "github-actions-workflow",
+    "**/terraform.tfvars.sample": "terraform-vars"
   }
 }
