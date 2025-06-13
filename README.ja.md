@@ -2,7 +2,7 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
-## 概要
+## 概要 <a id="overview"></a>
 
 このリポジトリは、Terraform と CI/CD ワークフローを使用して Azure リソースをデプロイおよび管理するための、包括的なモジュール型の Infrastructure as Code ソリューションを提供します。Azure DevOps と GitHub ベースの CI/CD ワークフローの両方をサポートするように設計されており、組織は Git でバージョン管理された Infrastructure as Code を使用して、安全でスケーラブル、かつポリシーに準拠したクラウド環境のプロビジョニングを自動化できます。
 
@@ -21,11 +21,11 @@
 >
 > 将来的に Azure DevOps プロジェクトをサポートする予定です。
 
-## はじめる
+## はじめる <a id="getting-started"></a>
 
 このモジュールを使って Azure リソースのデプロイを自動化する DevOps 環境を展開するには、各ステップに必要な準備を行ってから、以下のステップで実行します。
 
-### 0. 準備
+### 0. 準備 <a id="start-0-prerequisites"></a>
 
 以下の準備を行ってください。
 
@@ -40,9 +40,23 @@
     - 本番展開用のサブスクリプション
 - 上記の Azure Subscription に対する `所有者` または `共同開発者` の権限
   - このドキュメントの作業で利用するユーザーの権限
+- GitHub PAT (Personal Access Token)
+  - GitHub プロジェクトリソースのプロビジョニングのためのトークン (以下の権限を付与したトークン)
+    - `repo`
+    - `workflow`
+    - `admin:org`
+    - `user: read:user`
+    - `user: user:email`
+    - `delete_repo`
+  - GitHub セルフホステッド ランナーのためのトークン
+    - `repo`
+    - `admin:org`
 
 > [!NOTE]
 > すべての Azure Subscription は同じ Entra ID テナント配下で用意してください。
+
+> [!NOTE]
+> 上記の GitHub PAT トークンは `classic` パーソナルアクセストークンについて説明しています。よりきめ細かな権限設定が可能な `fine-grained` アクセストークンも利用できます。
 
 Azure CLI を使って準備した Entra ID にログインします。
 
@@ -50,7 +64,7 @@ Azure CLI を使って準備した Entra ID にログインします。
 az login --tenant <Tenant_Id>
 ```
 
-### 1. ブートストラップ リソースのプロビジョニング
+### 1. ブートストラップ リソースのプロビジョニング <a id="start-1-provision-bootstrap"></a>
 
 ブートストラップ モジュール ([`infra/terraform/_bootstrap`](./infra/terraform/_bootstrap/)) を使って、DevOps 環境の基礎となるリソース (Azure Blob Storage および Key Vault) をプロビジョニングします。
 
@@ -94,9 +108,9 @@ terraform apply
 
 プロビジョニング完了後、以下のファイルが生成されます。
 
-- backend.tf
-- bootstrap.config.json (または、`bootstrap_config_filename` で指定したファイル名)
-- devops.azurerm.tfbackend (または、`tfbackend_config_template_filename` で指定したファイル名)
+- `backend.tf`
+- `bootstrap.config.json` (または、`bootstrap_config_filename` で指定したファイル名)
+- `devops.azurerm.tfbackend` (または、`tfbackend_config_template_filename` で指定したファイル名)
 
 これらのファイルは、ブートストラップ リソースの構成情報を保存したファイルであり、次のステップで利用します。
 
@@ -108,7 +122,7 @@ terraform apply
 terraform init -migrate-state
 ```
 
-### 2. DevOps ランディングゾーン リソースのプロビジョニング
+### 2. DevOps ランディングゾーン リソースのプロビジョニング <a id="start-2-provision-devops-lz"></a>
 
 ブートストラップ モジュールの展開が完了したら、次に、DevOps ランディングゾーン リソースのプロビジョニングを行います。
 
@@ -163,9 +177,9 @@ terraform plan
 terraform apply
 ```
 
-### 3. プロジェクト リソースのプロビジョニング
+### 3. DevOps プロジェクト リソースのプロビジョニング <a id="start-3-provision-devops-project"></a>
 
-DevOps ランディングゾーン リソースのプロビジョニングが完了したら、プロジェクトごとの個別のリソース (リポジトリ、CI/CD パイプライン、ユーザー割り当て ID、セルフホステッド ランナーのコンテナー実行のための環境) をプロビジョニングします。
+DevOps ランディングゾーン リソースのプロビジョニングが完了したら、DevOps プロジェクトごとの個別のリソース (リポジトリ、CI/CD パイプライン、ユーザー割り当て ID、セルフホステッド ランナーのコンテナー実行のための環境) をプロビジョニングします。
 
 このステップは、前のステップまでにプロビジョニングしたDevOps ランディングゾーン リソースを共有して利用し、プロジェクトごとに実行することが可能です。
 
@@ -189,7 +203,7 @@ cp terraform.tfvars.sample terraform.tfvars
 
 > [!NOTE]
 > このステップでは、プロビジョニング済みのブートストラップ リソースを利用するため、ブートストラップ リソースの構成情報を格納した JSON ファイルを `bootstrap_config_filename` に必ず指定してください。既定値を利用している場合は変更の必要はありません。
->
+
 > [!NOTE]
 > このステップでは、プロビジョニング済みの DevOps ランディングゾーン リソースを利用するため、DevOps ランディングゾーンリソースをプロビジョニング時の Terraform 状態管理ファイルを利用します。このため、ステップ 2 にプロビジョニングの実行コマンドで指定した azurerm リモートバックエンドの `key` パラメーターを `devops_tfstate_key` に必ず指定してください。このドキュメントで指定した通り実行する場合は、既定値のままで問題ありません。
 
@@ -220,6 +234,6 @@ terraform plan
 terraform apply
 ```
 
-## コントリビューション
+## コントリビューション <a id="contributing"></a>
 
 コントリビューションは大歓迎です！ 提案や改善点があれば、PR (Pull Request) を送信するか、Issues を作成してください。

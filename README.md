@@ -2,7 +2,7 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
-## Overview
+## Overview <a id="overview"></a>
 
 This repository provides a comprehensive, modular infrastructure-as-code solution for deploying and managing Azure resources with using Terraform and CI/CD workflows. This is designed to support both Azure DevOps and GitHub-based CI/CD workflows, enabling organizations to automate the provisioning of secure, scalable, and policy-compliant cloud environments using infrastructure as code, versioned with Git.
 
@@ -21,11 +21,11 @@ The `infra/terraform` directory contains all core infrastructure code, organized
 >
 > We are planning to support Azure DevOps projects in the near future.
 
-## Getting Started
+## Getting Started <a id="getting-started"></a>
 
 To provision DevOps CI/CD environment that automates the deployment of Azure resources, please perform the following steps after making the necessary preparations for each of steps.
 
-### 0. Prerequisites
+### 0. Prerequisites <a id="start-0-prerequisites"></a>
 
 Please prepare the following components and permissions:
 
@@ -40,9 +40,23 @@ Please prepare the following components and permissions:
     - Subscriptions for production deployment
 - `Owners` or `Contributors` permissions for the above Azure Subscriptions
   - Permissions for the user who will be using this document
+- GitHub PAT (Personal Access Token)
+  - Token for provisioning GitHub project resources (token with the following permissions)
+    - `repo`
+    - `workflow`
+    - `admin:org`
+    - `user: read:user`
+    - `user: user:email`
+    - `delete_repo`
+  - Token for GitHub self-hosted runner
+    - `repo`
+    - `admin:org`
 
 > [!NOTE]
 > All Azure Subscriptions must be prepared under the same Entra ID tenant.
+
+> [!NOTE]
+> The above explanation about GitHub PAT refer to `classic` personal access tokens. You can also use `fine-grained` access tokens which are still in beta to provide more granular permissions. These docs will be updated to reflect this in the future.
 
 Please log in to your Entra ID using Azure CLI.
 
@@ -50,7 +64,7 @@ Please log in to your Entra ID using Azure CLI.
 az login --tenant <Tenant_Id>
 ```
 
-### 1. Provisioning Bootstrap Resources
+### 1. Provisioning Bootstrap Resources <a id="start-1-provision-bootstrap"></a>
 
 Please use the bootstrap module ([`infra/terraform/_bootstrap`](./infra/terraform/_bootstrap/) to provision the foundation resources (Azure Blob Storage and Key Vault) for the DevOps environment.
 
@@ -95,9 +109,9 @@ terraform apply
 
 After the provisioning above is complete, the following files will be generated.
 
-- backend.tf
-- bootstrap.config.json (or the file name specified in `bootstrap_config_filename`)
-- devops.azurerm.tfbackend (or the file name specified in `tfbackend_config_template_filename`)
+- `backend.tf`
+- `bootstrap.config.json` (or the file name specified in `bootstrap_config_filename`)
+- `devops.azurerm.tfbackend` (or the file name specified in `tfbackend_config_template_filename`)
 
 These files store the configuration information for the bootstrap resources and will be used in the next step.
 
@@ -109,7 +123,7 @@ You can also manage the Terraform state management file for this bootstrap resou
 terraform init -migrate-state
 ```
 
-### 2. Provisioning DevOps Landing Zone Resources
+### 2. Provisioning DevOps Landing Zone Resources <a id="start-2-provision-devops-lz"></a>
 
 After the Bootstrap resource provisioning above is complete, the next step is to provision the DevOps Landing Zone resources.
 
@@ -165,7 +179,7 @@ terraform plan
 terraform apply
 ```
 
-### 3. Provisioning Project Resources
+### 3. Provisioning DevOps Project Resources <a id="start-3-provision-devops-project"></a>
 
 After the DevOps Landing Zone resources provisioning above is complete, the next step is to provision individual resources for each project (Git repositories, CI/CD pipelines, user-assigned identities, environments for running containers for self-hosted agents/runners, and so on).
 
@@ -191,7 +205,7 @@ cp terraform.tfvars.sample terraform.tfvars
 
 > [!NOTE]
 > In this step, you will use provisioned Bootstrap resources, so be sure to specify the JSON file (specified in the parameter `bootstrap_config_filename`) that contains the configuration information of the bootstrap resources. If you are using the default value in the previous step, there is no need to change the parameter in this step.
->
+
 > [!NOTE]
 > In this step, you will use the provisioned DevOps Landing Zone resources, so you will use the Terraform state management file which was generated when provisioning the DevOps Landing Zone resources. For this reason, be sure to specify in the `devops_tfstate_key` parameter the `key` parameter of the azurerm remote backend specified in the provisioning execution command in step 2. If you are executing as specified in this document, there is no problem with the default value.
 
@@ -223,6 +237,6 @@ terraform plan
 terraform apply
 ```
 
-## Contributing
+## Contributing <a id="contributing"></a>
 
 Contributions are welcome! Please submit a pull request or open an issue for any suggestions or improvements.
