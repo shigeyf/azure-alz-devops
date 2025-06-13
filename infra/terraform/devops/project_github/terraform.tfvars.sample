@@ -1,0 +1,47 @@
+// terraform.tfvars.sample
+
+# Azure Subscription Id for deploying DevOps Landing Zone
+target_subscription_id = "<your Azure Subscription Id for DevOps>"
+
+# Project name
+project_name = "project-name"
+
+# Location in where DevOps Project resources are deployed
+location = "japaneast"
+
+# Resource Tags
+tags = {
+  appTag     = "project-name"
+  envTag     = "prod"
+  projectTag = "devops"
+  purposeTag = "alz"
+}
+
+# A list of Azure Subscriptions to be used in the DevOps Project
+subscriptions = {
+  "features" = {
+    id = "<your Azure Subscription Id for features development in the DevOps Project>"
+  },
+  "development" = {
+    id = "<your Azure Subscription Id for development environment in the DevOps Project>"
+  },
+  "staging" = {
+    id = "<your Azure Subscription Id for staging environment in the DevOps Project>"
+  },
+  "production" = {
+    id = "<your Azure Subscription Id for production environment in the DevOps Project>"
+  },
+}
+
+# Whether to use a templates repository in the DevOps Project
+use_templates_repository = true
+
+# Whether to use GitHub Runner Group in the DevOps Project
+use_runner_group         = false
+
+# Whether to use GitHub Self-Hosted Runners in the DevOps Project
+use_self_hosted_runners  = true
+
+# Compute type of GitHub Self-Hosted Runners
+# Options: "aca", "aci"
+self_hosted_runners_type = "aca"

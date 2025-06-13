@@ -11,12 +11,6 @@ variable "target_subscription_id" {
   }
 }
 
-variable "devops_tfstate_key" {
-  description = "Key for the Terraform state in Azure DevOps"
-  type        = string
-  default     = "devopslz.terraform.tfstate"
-}
-
 variable "role_propagation_time" {
   type        = string
   description = "Wait seconds to propagate role assignments"
@@ -50,7 +44,7 @@ variable "subscriptions" {
 variable "use_templates_repository" {
   description = "Whether to use a separate repository for templates"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "use_runner_group" {
@@ -62,7 +56,7 @@ variable "use_runner_group" {
 variable "use_self_hosted_runners" {
   description = "Enable self-hosted runners"
   type        = bool
-  default     = false
+  default     = true
 
   validation {
     condition     = var.use_self_hosted_runners == false && local.options.private_network_enabled == false || var.use_self_hosted_runners == true && local.options.self_hosted_enabled == true
