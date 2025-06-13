@@ -1,4 +1,4 @@
-# Azure リソース デプロイのための DevOps ランディングゾーン
+# Terraform を使った Azure リソース CI/CD デプロイのための DevOps ランディングゾーン
 
 [English](./README.md) | [日本語](./README.ja.md)
 

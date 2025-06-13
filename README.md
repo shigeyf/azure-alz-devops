@@ -1,4 +1,4 @@
-# DevOps Lnading Zone for Azure Resources Deployment
+# DevOps Landing Zone for Azure Resources Terraform CI/CD deployment
 
 [English](./README.md) | [日本語](./README.ja.md)
 
