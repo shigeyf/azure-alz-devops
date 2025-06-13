@@ -14,8 +14,8 @@ locals {
 
   // Pipeline Agents Resources
   enable_agents_resources             = var.enable_self_hosted_agents
-  enable_agents_on_aca                = contains(var.agents_compute_type, "aca")
-  enable_agents_on_aci                = contains(var.agents_compute_type, "aci")
+  enable_agents_on_aca                = true # always true
+  enable_agents_on_aci                = true # always true
   agents_resource_group_name          = local.enable_agents_resources ? azurerm_resource_group.agents[0].name : ""
   agents_tags                         = merge(var.tags, { appTag = "agents" })
   container_registry_name             = "${module.naming_agents.container_registry.name}${local.rand_id}"
@@ -23,8 +23,6 @@ locals {
   container_app_log_analytics_name    = "${module.naming_agents.log_analytics_workspace.name}-${local.rand_id}"
   container_app_environment_name      = "${module.naming_agents.container_app_environment.name}-${local.rand_id}"
   container_app_workload_profile_name = "Consumption"
-  #container_app_job_name              = join("-", ["cajob"], ["agents", local.location_short_name, local.rand_id])
-  #container_app_job_placeholder_name  = join("-", ["cajob"], ["agents", local.location_short_name, local.rand_id], ["ph"])
 
   // Network Resources
   enable_network_resources    = var.enable_private_network && var.enable_self_hosted_agents

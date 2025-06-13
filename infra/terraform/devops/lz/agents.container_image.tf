@@ -1,5 +1,13 @@
 // container.tf
 
+# We would be better to prepare all patterns of self-hosted
+# agents/runners container images for various DevOps
+# projects to be deployed:
+# - Azure DevOps Pipeline agent on Azure Container Apps
+# - GitHub Actions runner on Azure Container Apps
+# - Azure DevOps Pipeline agent on Azure Container Instances
+# - GitHub Actions runner on Azure Container Instances
+
 module "azuredevops_agent_aca" {
   count  = local.enable_agents_resources && local.enable_agents_on_aca && var.enable_azuredevops ? 1 : 0
   source = "../../modules/azure_devops_agent_aca"
@@ -33,7 +41,6 @@ module "github_runner_aci" {
   count  = local.enable_agents_resources && local.enable_agents_on_aci && var.enable_azuredevops ? 1 : 0
   source = "../../modules/github_runner_aci"
 
-  organization_name    = var.github_organization_name
   runner_pat_secret_id = azurerm_key_vault_secret.github[local.vcs_secret_github_personal_access_token_agent].versionless_id
 }
 

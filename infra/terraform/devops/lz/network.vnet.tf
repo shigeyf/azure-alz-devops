@@ -1,5 +1,48 @@
 // vnet.tf
 
+locals {
+  _vnet_subnets = {
+    (var.vnet_private_endpoint_subnet_name) = {
+      name                  = var.vnet_private_endpoint_subnet_name
+      address_prefix        = var.vnet_private_endpoint_subnet_address_prefix
+      naming_prefix_enabled = true
+    },
+    "GatewaySubnet" = {
+      "name"                  = "GatewaySubnet"
+      "address_prefix"        = var.vnet_gateway_subnet_address_prefix
+      "naming_prefix_enabled" = false
+    },
+    (var.vnet_container_instance_subnet_name) = {
+      name                  = var.vnet_container_instance_subnet_name
+      address_prefix        = var.vnet_container_instance_subnet_address_prefix
+      naming_prefix_enabled = true
+      delegation = [
+        {
+          name = "Microsoft.ContainerInstance/containerGroups"
+          service_delegation = {
+            name    = "Microsoft.ContainerInstance/containerGroups"
+            actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+          }
+        }
+      ]
+    }
+    (var.vnet_container_app_subnet_name) = {
+      name                  = var.vnet_container_app_subnet_name
+      address_prefix        = var.vnet_container_app_subnet_address_prefix
+      naming_prefix_enabled = true
+      delegation = [
+        {
+          name = "Microsoft.App/environments"
+          service_delegation = {
+            name    = "Microsoft.App/environments"
+            actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+          }
+        }
+      ]
+    }
+  }
+}
+
 module "vnet" {
   count = local.enable_network_resources ? 1 : 0
   # tflint-ignore: terraform_module_pinned_source
@@ -21,7 +64,7 @@ module "vnet" {
 
   // Options
   address_prefix      = var.vnet_address_prefix
-  subnets             = var.vnet_subnets
+  subnets             = local._vnet_subnets
   enable_nat_gateway  = true
   enable_bastion_host = false
   enable_vpn_gateway  = false

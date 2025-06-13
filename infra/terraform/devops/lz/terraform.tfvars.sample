@@ -1,0 +1,55 @@
+// terraform.tfvars.sample
+
+# Azure Subscription Id for deploying DevOps Landing Zone
+target_subscription_id = "<your Azure Subscription Id for DevOps>"
+
+# Suffix for resource naming
+naming_suffix = ["alz", "devops"]
+
+# Location in where DevOps resources are deployed
+location = "japaneast"
+
+# Resource Tags
+tags = { envTag = "prod", purposeTag = "alz", projectTag = "devops", }
+
+# Enable Self-Hosted Agents/Runners
+enable_self_hosted_agents = true
+
+# Enable Private Virtual Network where Self-Hosted Agents/Runners are running
+enable_private_network = true
+
+# Enable GitHub for this DevOps resources
+enable_github = true
+
+# GitHub Organization Name
+github_organization_name = "<your_github_org_name>"
+
+# GitHub Personal Access Token to be used for GitHub resource provisioning
+github_personal_access_token = "<your GitHub PAT for resource provisioning>"
+
+# GitHub Personal Access Token to be used for GitHub Self-Hosted Runners
+github_personal_access_token_for_runners = "<your GitHub PAT for GitHub Self-Hosted Runners>"
+
+# Virtual Network address prefix for Private Virtual Network
+vnet_address_prefix = "10.10.0.0/16"
+
+# Private-Endpoint subnet address prefix for Private Virtual Network
+vnet_private_endpoint_subnet_address_prefix = "10.10.0.0/21"
+
+# Private-Endpoint subnet address prefix for Private Virtual Network
+vnet_gateway_subnet_address_prefix = "10.10.100.0/26"
+
+# ACA subnet address prefix for Private Virtual Network
+vnet_container_app_subnet_address_prefix = "10.10.20.0/27"
+
+# ACI subnet address prefix for Private Virtual Network
+vnet_container_instance_subnet_address_prefix = "10.10.30.0/27"
+
+# Private-Endpoint subnet name for Private Virtual Network
+#vnet_private_endpoint_subnet_name   = "private-endpoints"
+
+# ACA subnet name for Private Virtual Network
+#vnet_container_app_subnet_name      = "container-apps"
+
+# ACI subnet name for Private Virtual Network
+#vnet_container_instance_subnet_name = "container-instances"

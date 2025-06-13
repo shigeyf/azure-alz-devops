@@ -5,40 +5,40 @@ variable "vnet_address_prefix" {
   type        = string
 }
 
+variable "vnet_private_endpoint_subnet_address_prefix" {
+  description = "Address prefix for the private endpoint subnet in the virtual network"
+  type        = string
+}
+
+variable "vnet_gateway_subnet_address_prefix" {
+  description = "Address prefix for the gateway subnet in the virtual network"
+  type        = string
+}
+
+variable "vnet_container_app_subnet_address_prefix" {
+  description = "Address prefix for the Container Apps subnet in the virtual network"
+  type        = string
+}
+
+variable "vnet_container_instance_subnet_address_prefix" {
+  description = "Address prefix for the Container Instances subnet in the virtual network"
+  type        = string
+}
+
 variable "vnet_private_endpoint_subnet_name" {
   description = "Subnet name for the private endpoints in the virtual network"
   type        = string
+  default     = "private-endpoints"
 }
 
 variable "vnet_container_app_subnet_name" {
   description = "Subnet name for the Container Apps in the virtual network"
   type        = string
+  default     = "container-apps"
 }
 
 variable "vnet_container_instance_subnet_name" {
   description = "Subnet name for the Container Instances in the virtual network"
   type        = string
-}
-
-variable "vnet_subnets" {
-  description = "Subnets configurations for the virtual network"
-  type = map(object(
-    {
-      name                  = string    # Subnet name
-      address_prefix        = string    # Subnet address prefix
-      naming_prefix_enabled = bool      # Whether to add naming prefix ("snet") to the subnet name
-      delegation = optional(set(object( # 'delegation' block
-        {
-          name = string
-          service_delegation = object(
-            {
-              name    = string
-              actions = optional(list(string))
-            }
-          )
-        }
-      )))
-    }
-  ))
-  default = {}
+  default     = "container-instances"
 }
