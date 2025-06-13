@@ -2,7 +2,9 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
-## 概要 <a id="overview"></a>
+<a id="overview"></a>
+
+## 概要
 
 このリポジトリは、Terraform と CI/CD ワークフローを使用して Azure リソースをデプロイおよび管理するための、包括的なモジュール型の Infrastructure as Code ソリューションを提供します。Azure DevOps と GitHub ベースの CI/CD ワークフローの両方をサポートするように設計されており、組織は Git でバージョン管理された Infrastructure as Code を使用して、安全でスケーラブル、かつポリシーに準拠したクラウド環境のプロビジョニングを自動化できます。
 
@@ -21,11 +23,15 @@
 >
 > 将来的に Azure DevOps プロジェクトをサポートする予定です。
 
-## はじめる <a id="getting-started"></a>
+<a id="getting-started"></a>
+
+## はじめる
 
 このモジュールを使って Azure リソースのデプロイを自動化する DevOps 環境を展開するには、各ステップに必要な準備を行ってから、以下のステップで実行します。
 
-### 0. 準備 <a id="start-0-prerequisites"></a>
+<a id="start-0-prerequisites"></a>
+
+### 0. 準備
 
 以下の準備を行ってください。
 
@@ -64,13 +70,17 @@ Azure CLI を使って準備した Entra ID にログインします。
 az login --tenant <Tenant_Id>
 ```
 
-### 1. ブートストラップ リソースのプロビジョニング <a id="start-1-provision-bootstrap"></a>
+<a id="start-1-provision-bootstrap"></a>
+
+### 1. ブートストラップ リソースのプロビジョニング
 
 ブートストラップ モジュール ([`infra/terraform/_bootstrap`](./infra/terraform/_bootstrap/)) を使って、DevOps 環境の基礎となるリソース (Azure Blob Storage および Key Vault) をプロビジョニングします。
 
 ```bash
 cd $ProjectRoot/infra/terraform/_bootstrap
 ```
+
+<a id="start-1-provision-bootstrap-1a"></a>
 
 #### 1-a. パラメーター ファイルの準備
 
@@ -81,6 +91,8 @@ cp terraform.tfvars.sample terraform.tfvars
 ```
 
 指定可能なパラメーターは以下の通りです。
+
+<a id="start-1-provision-bootstrap-parameters"></a>
 
 | パラメーター                          | 型           | オプショナル | 説明                                                                                                                         |
 | ------------------------------------- | ------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -94,6 +106,8 @@ cp terraform.tfvars.sample terraform.tfvars
 | `customer_managed_key_policy`         | object       | はい         | カスタマー マネージド キーのポリシー (既定値: RSA 4096 ビット、90日で更新が必要)                                             |
 | `bootstrap_config_filename`           | string       | はい         | ブートストラップ構成ファイルを保存するファイル名 (既定値: `./bootstrap.config.json`)                                         |
 | `tfbackend_config_template_filename`  | string       | はい         | Terraform 状態管理ファイルの azurerm リモートバックエンド構成のテンプレートファイル名 (既定値: `./devops.azurerm.tfbackend`) |
+
+<a id="start-1-provision-bootstrap-1b"></a>
 
 #### 1-b. ブートストラップ リソースのプロビジョニング実行
 
@@ -114,6 +128,8 @@ terraform apply
 
 これらのファイルは、ブートストラップ リソースの構成情報を保存したファイルであり、次のステップで利用します。
 
+<a id="start-1-provision-bootstrap-1c"></a>
+
 #### 1-c. Terraform 状態管理ファイルの移行
 
 また、以下のコマンドを実行することで、このリソース展開そのものの Terraform 状態ファイルの管理を azurerm リモートバックエンドで実施することができます。
@@ -122,13 +138,17 @@ terraform apply
 terraform init -migrate-state
 ```
 
-### 2. DevOps ランディングゾーン リソースのプロビジョニング <a id="start-2-provision-devops-lz"></a>
+<a id="start-2-provision-devops-lz"></a>
+
+### 2. DevOps ランディングゾーン リソースのプロビジョニング
 
 ブートストラップ モジュールの展開が完了したら、次に、DevOps ランディングゾーン リソースのプロビジョニングを行います。
 
 ```bash
 cd $ProjectRoot/infra/terraform/devops/lz
 ```
+
+<a id="start-2-provision-devops-lz-2a"></a>
 
 #### 2-a. パラメーター ファイルの準備
 
@@ -142,6 +162,8 @@ cp terraform.tfvars.sample terraform.tfvars
 > このステップでは、プロビジョニング済みのブートストラップ リソースを利用するため、ブートストラップ リソースの構成情報を格納した JSON ファイルを `bootstrap_config_filename` に必ず指定してください。既定値を利用している場合は変更の必要はありません。
 
 指定可能なパラメーターは以下の通りです。
+
+<a id="start-2-provision-devops-lz-parameters"></a>
 
 | パラメーター                                    | 型           | オプショナル | 説明                                                                                                                      |
 | ----------------------------------------------- | ------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------- |
@@ -166,6 +188,8 @@ cp terraform.tfvars.sample terraform.tfvars
 | `enable_agents_environment_zone_redundancy`     | bool         | はい         | ACA のゾーン冗長化を有効化するかどうか (既定値: `true`)                                                                   |
 | `bootstrap_config_filename`                     | string       | はい         | ブートストラップ構成ファイルが保存されたファイル名 (既定値: `../../_bootstrap/bootstrap.config.json`)                     |
 
+<a id="start-2-provision-devops-lz-2b"></a>
+
 #### 2-b. DevOps リソースのプロビジョニング実行
 
 Terraform を実行して、リソース プロビジョニングを実行します。
@@ -177,7 +201,9 @@ terraform plan
 terraform apply
 ```
 
-### 3. DevOps プロジェクト リソースのプロビジョニング <a id="start-3-provision-devops-project"></a>
+<a id="start-3-provision-devops-project"></a>
+
+### 3. DevOps プロジェクト リソースのプロビジョニング
 
 DevOps ランディングゾーン リソースのプロビジョニングが完了したら、DevOps プロジェクトごとの個別のリソース (リポジトリ、CI/CD パイプライン、ユーザー割り当て ID、セルフホステッド ランナーのコンテナー実行のための環境) をプロビジョニングします。
 
@@ -192,6 +218,8 @@ export project_name="<your-project-name>"
 > 現時点では GitHub プロジェクトのみをサポートしています。
 >
 > 将来的に Azure DevOps プロジェクトをサポートする予定です。
+
+<a id="start-3-provision-devops-project-3a"></a>
 
 #### 3-a. パラメーター ファイルの準備
 
@@ -209,6 +237,8 @@ cp terraform.tfvars.sample terraform.tfvars
 
 指定可能なパラメーターは以下の通りです。
 
+<a id="start-3-provision-devops-project-parameters"></a>
+
 | パラメーター                | 型          | オプショナル | 説明                                                                                                                                         |
 | --------------------------- | ----------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
 | `target_subscription_id`    | string      | いいえ       | DevOps Project リソースをデプロイするための Azure サブスクリプション ID                                                                      |
@@ -223,6 +253,8 @@ cp terraform.tfvars.sample terraform.tfvars
 | `bootstrap_config_filename` | string      | はい         | ブートストラップ構成ファイルを保存するファイル名 (既定値: `../../_bootstrap/bootstrap.config.json`)                                          |
 | `devops_tfstate_key`        | string      | はい         | DevOps ランディングゾーン リソースの Terraform 状態管理ファイル名（azurerm リモートバックエンドキー） (既定値: `devopslz.terraform.tfstate`) |
 
+<a id="start-3-provision-devops-project-3b"></a>
+
 #### 3-b. プロジェクト リソースのプロビジョニング実行
 
 Terraform を実行して、リソース プロビジョニングを実行します。
@@ -234,6 +266,8 @@ terraform plan
 terraform apply
 ```
 
-## コントリビューション <a id="contributing"></a>
+<a id="contributing"></a>
+
+## コントリビューション
 
 コントリビューションは大歓迎です！ 提案や改善点があれば、PR (Pull Request) を送信するか、Issues を作成してください。

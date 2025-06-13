@@ -2,7 +2,9 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
-## Overview <a id="overview"></a>
+<a id="overview"></a>
+
+## Overview
 
 This repository provides a comprehensive, modular infrastructure-as-code solution for deploying and managing Azure resources with using Terraform and CI/CD workflows. This is designed to support both Azure DevOps and GitHub-based CI/CD workflows, enabling organizations to automate the provisioning of secure, scalable, and policy-compliant cloud environments using infrastructure as code, versioned with Git.
 
@@ -21,11 +23,15 @@ The `infra/terraform` directory contains all core infrastructure code, organized
 >
 > We are planning to support Azure DevOps projects in the near future.
 
-## Getting Started <a id="getting-started"></a>
+<a id="getting-started"></a>
+
+## Getting Started
 
 To provision DevOps CI/CD environment that automates the deployment of Azure resources, please perform the following steps after making the necessary preparations for each of steps.
 
-### 0. Prerequisites <a id="start-0-prerequisites"></a>
+<a id="start-0-prerequisites"></a>
+
+### 0. Prerequisites
 
 Please prepare the following components and permissions:
 
@@ -64,13 +70,17 @@ Please log in to your Entra ID using Azure CLI.
 az login --tenant <Tenant_Id>
 ```
 
-### 1. Provisioning Bootstrap Resources <a id="start-1-provision-bootstrap"></a>
+<a id="start-1-provision-bootstrap"></a>
+
+### 1. Provisioning Bootstrap Resources
 
 Please use the bootstrap module ([`infra/terraform/_bootstrap`](./infra/terraform/_bootstrap/) to provision the foundation resources (Azure Blob Storage and Key Vault) for the DevOps environment.
 
 ```bash
 cd $ProjectRoot/infra/terraform/_bootstrap
 ```
+
+<a id="start-1-provision-bootstrap-1a"></a>
 
 #### 1-a. Preparing your parameters file
 
@@ -81,6 +91,8 @@ cp terraform.tfvars.sample terraform.tfvars
 ```
 
 The following parameters can be specified:
+
+<a id="start-1-provision-bootstrap-parameters"></a>
 
 | Parameter                             | Type         | Optional | Description                                                                                                                    |
 | ------------------------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
@@ -94,6 +106,8 @@ The following parameters can be specified:
 | `customer_managed_key_policy`         | object       | Yes      | Policy for customer-managed key (default: RSA 4096 bit, require renewal in 90 days)                                            |
 | `bootstrap_config_filename`           | string       | Yes      | Filename to save bootstrap config file (default: `./bootstrap.config.json`)                                                    |
 | `tfbackend_config_template_filename`  | string       | Yes      | Template configurations of azurerm remote backend for Terraform state management files (default: `./devops.azurerm.tfbackend`) |
+
+<a id="start-1-provision-bootstrap-1b"></a>
 
 #### 1-b. Run Bootstrap Resource Provisioning
 
@@ -115,6 +129,8 @@ After the provisioning above is complete, the following files will be generated.
 
 These files store the configuration information for the bootstrap resources and will be used in the next step.
 
+<a id="start-1-provision-bootstrap-1c"></a>
+
 #### 1-c. Migrate Terraform state management file
 
 You can also manage the Terraform state management file for this bootstrap resource provisioning itself in the azurerm remote backend by running the following command:
@@ -123,13 +139,17 @@ You can also manage the Terraform state management file for this bootstrap resou
 terraform init -migrate-state
 ```
 
-### 2. Provisioning DevOps Landing Zone Resources <a id="start-2-provision-devops-lz"></a>
+<a id="start-2-provision-devops-lz"></a>
+
+### 2. Provisioning DevOps Landing Zone Resources
 
 After the Bootstrap resource provisioning above is complete, the next step is to provision the DevOps Landing Zone resources.
 
 ```bash
 cd $ProjectRoot/infra/terraform/devops/lz
 ```
+
+<a id="start-2-provision-devops-lz-2a"></a>
 
 #### 2-a. Prepare your parameters file
 
@@ -143,6 +163,8 @@ cp terraform.tfvars.sample terraform.tfvars
 > In this step, you will use provisioned Bootstrap resources, so be sure to specify the JSON file (specified in the parameter `bootstrap_config_filename`) that contains the configuration information of the bootstrap resources. If you are using the default value in the previous step, there is no need to change the parameter in this step.
 
 The parameters that can be specified are as follows.
+
+<a id="start-2-provision-devops-lz-parameters"></a>
 
 | Parameter                                       | Type         | Optional | Description                                                                                              |
 | ----------------------------------------------- | ------------ | -------- | -------------------------------------------------------------------------------------------------------- |
@@ -167,6 +189,8 @@ The parameters that can be specified are as follows.
 | `enable_agents_environment_zone_redundancy`     | bool         | Yes      | Whether to enable zone redundancy for ACA (default: `true`)                                              |
 | `bootstrap_config_filename`                     | string       | Yes      | Filename to load bootstrap config file to (default: `../../_bootstrap/bootstrap.config.json`)            |
 
+<a id="start-2-provision-devops-lz-2b"></a>
+
 #### 2-b. Run DevOps Resource Provisioning
 
 Run Terraform for DevOps resource provisioning.
@@ -179,7 +203,9 @@ terraform plan
 terraform apply
 ```
 
-### 3. Provisioning DevOps Project Resources <a id="start-3-provision-devops-project"></a>
+<a id="start-3-provision-devops-project"></a>
+
+### 3. Provisioning DevOps Project Resources
 
 After the DevOps Landing Zone resources provisioning above is complete, the next step is to provision individual resources for each project (Git repositories, CI/CD pipelines, user-assigned identities, environments for running containers for self-hosted agents/runners, and so on).
 
@@ -194,6 +220,8 @@ export project_name="<your-project-name>"
 > Currently we only support GitHub projects.
 >
 > We are planning to support Azure DevOps projects in the future.
+
+<a id="start-3-provision-devops-project-3a"></a>
 
 #### 3-a. Prepare parameters file
 
@@ -211,6 +239,8 @@ cp terraform.tfvars.sample terraform.tfvars
 
 The parameters that can be specified are as follows.
 
+<a id="start-3-provision-devops-project-parameters"></a>
+
 | Parameter                   | Type        | Optional | Description                                                                                                                                |
 | --------------------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | `target_subscription_id`    | string      | No       | Azure Subscription Id for provisioning DevOps Project resources                                                                            |
@@ -225,6 +255,8 @@ The parameters that can be specified are as follows.
 | `bootstrap_config_filename` | string      | Yes      | Filename to load bootstrap config file to (default: `../../_bootstrap/bootstrap.config.json`)                                              |
 | `devops_tfstate_key`        | string      | Yes      | Terraform state management filename for DevOps Landing Zone resources (azurerm remote backend key) (default: `devopslz.terraform.tfstate`) |
 
+<a id="start-3-provision-devops-project-3b"></a>
+
 #### 3-b. Run DevOps Project Resource Provisioning
 
 Run Terraform to run DevOps Project resource provisioning.
@@ -237,6 +269,8 @@ terraform plan
 terraform apply
 ```
 
-## Contributing <a id="contributing"></a>
+<a id="contributing"></a>
+
+## Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue for any suggestions or improvements.
