@@ -282,6 +282,12 @@ terraform plan
 terraform apply
 ```
 
+<a id="example-output"></a>
+
+## Example of provisioned resources
+
+[The document](./docs/Example-of-DevOps-Landing-Zone.md) explaines an example of provisioned resources.
+
 <a id="contents"></a>
 
 ## Contents of this repository

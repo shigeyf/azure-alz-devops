@@ -278,6 +278,12 @@ terraform plan
 terraform apply
 ```
 
+<a id="example-output"></a>
+
+## プロビジョニングされたリソースの例
+
+[このドキュメント](./docs/Example-of-DevOps-Landing-Zone.md) (英語) では、プロビジョニングされたリソースの例について説明しています。
+
 <a id="contents"></a>
 
 ## このリポジトリの内容
