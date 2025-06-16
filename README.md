@@ -9,6 +9,8 @@
 This repository provides a comprehensive, modular infrastructure-as-code solution for deploying and managing Azure resources with using Terraform and CI/CD workflows. This is designed to support both Azure DevOps and GitHub-based CI/CD workflows, enabling organizations to automate the provisioning of secure, scalable, and policy-compliant cloud environments using infrastructure as code, versioned with Git.
 The project Git repository which is provisined by this module is designed to be used in enterprise environments and follows Azure and Terraform best practices.
 
+![DevOps Landing Zone Architecture Overview](/docs/images/devops-landing-zone-architecture.png)
+
 Key features include:
 
 - **Modular Terraform Architecture**: Reusable modules for common Azure and DevOps patterns.

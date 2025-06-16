@@ -8,6 +8,8 @@
 
 このリポジトリは、Terraform と CI/CD ワークフローを使用して Azure リソースをデプロイおよび管理するための、包括的なモジュール型の Infrastructure as Code ソリューションを提供します。Azure DevOps と GitHub ベースの CI/CD ワークフローの両方をサポートするように設計されており、組織は Git でバージョン管理された Infrastructure as Code を使用して、安全でスケーラブル、かつポリシーに準拠したクラウド環境のプロビジョニングを自動化できます。このモジュールによって提供されるプロジェクト Git リポジトリは、エンタープライズ環境で使用するように設計されており、Azure および Terraform のベスト プラクティスに準拠しています。
 
+![DevOps ランディングゾーン アーキテクチャ概要](/docs/images/devops-landing-zone-architecture.png)
+
 主な機能は次のとおりです。
 
 - **モジュール型の Terraform アーキテクチャ**： 一般的な Azure および DevOps パターン用の再利用可能なモジュール
