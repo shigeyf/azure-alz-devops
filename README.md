@@ -77,6 +77,8 @@ az login --tenant <Tenant_Id>
 
 ### 1. Provisioning Bootstrap Resources
 
+![Provisioning Bootstrap Resources](/docs/images/provisioned-bootstrap-resources.png)
+
 Please use the bootstrap module ([`infra/terraform/_bootstrap`](./infra/terraform/_bootstrap/) to provision the foundation resources (Azure Blob Storage and Key Vault) for the DevOps environment.
 
 ```bash
@@ -146,6 +148,8 @@ terraform init -migrate-state
 
 ### 2. Provisioning DevOps Landing Zone Resources
 
+![Provisioning DevOps Landing Zone Resources](/docs/images/provisioned-devops-resources.png)
+
 After the Bootstrap resource provisioning above is complete, the next step is to provision the DevOps Landing Zone resources.
 
 ```bash
@@ -213,6 +217,8 @@ terraform apply
 <a id="start-3-provision-devops-project"></a>
 
 ### 3. Provisioning DevOps Project Resources
+
+![Provisioning DevOps Project Resources](/docs/images/provisioned-devops-project-resources.png)
 
 After the DevOps Landing Zone resources provisioning above is complete, the next step is to provision individual resources for each project (Git repositories, CI/CD pipelines, user-assigned identities, environments for running containers for self-hosted agents/runners, and so on).
 

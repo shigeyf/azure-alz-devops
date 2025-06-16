@@ -76,6 +76,8 @@ az login --tenant <Tenant_Id>
 
 ### 1. ブートストラップ リソースのプロビジョニング
 
+![ブートストラップ リソースのプロビジョニング](/docs/images/provisioned-bootstrap-resources.png)
+
 ブートストラップ モジュール ([`infra/terraform/_bootstrap`](./infra/terraform/_bootstrap/)) を使って、DevOps 環境の基礎となるリソース (Azure Blob Storage および Key Vault) をプロビジョニングします。
 
 ```bash
@@ -144,6 +146,8 @@ terraform init -migrate-state
 
 ### 2. DevOps ランディングゾーン リソースのプロビジョニング
 
+![DevOps ランディングゾーン リソースのプロビジョニング](/docs/images/provisioned-devops-resources.png)
+
 ブートストラップ モジュールの展開が完了したら、次に、DevOps ランディングゾーン リソースのプロビジョニングを行います。
 
 > [!NOTE]
@@ -210,6 +214,8 @@ terraform apply
 <a id="start-3-provision-devops-project"></a>
 
 ### 3. DevOps プロジェクト リソースのプロビジョニング
+
+![DevOps プロジェクト リソースのプロビジョニング](/docs/images/provisioned-devops-project-resources.png)
 
 DevOps ランディングゾーン リソースのプロビジョニングが完了したら、DevOps プロジェクトごとの個別のリソース (リポジトリ、CI/CD パイプライン、ユーザー割り当て ID、セルフホステッド ランナーのコンテナー実行のための環境) をプロビジョニングします。
 
