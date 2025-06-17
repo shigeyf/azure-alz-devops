@@ -1,5 +1,7 @@
 # Provisioned DevOps Resource Example
 
+[English](./Example-of-DevOps-Landing-Zone.md) | [日本語](./Example-of-DevOps-Landing-Zone.ja.md)
+
 This document shows an example of provisioned resources by this project repository.
 
 ## Provisioned Resource Groups

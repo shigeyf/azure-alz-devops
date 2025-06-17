@@ -1,5 +1,7 @@
 # プロビジョニングされた DevOps リソースの例
 
+[English](./Example-of-DevOps-Landing-Zone.md) | [日本語](./Example-of-DevOps-Landing-Zone.ja.md)
+
 このドキュメントでは、このプロジェクトのリポジトリによってプロビジョニングされたリソースの例を示します。
 
 ## プロビジョニングされたリソースグループ
