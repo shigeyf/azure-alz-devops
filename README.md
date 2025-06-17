@@ -2,6 +2,25 @@
 
 [English](./README.md) | [日本語](./README.ja.md)
 
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Getting Started](#getting-started)
+  - [0\. Prerequisites](#start-0-prerequisites)
+  - [1\. Provisioning Bootstrap Resources](#start-1-provision-bootstrap)
+  - [2\. Provisioning DevOps Landing Zone Resources](#start-2-provision-devops-lz)
+  - [3\. Provisioning DevOps Project Resources](#start-3-provision-devops-project)
+- [Example of provisioned resources](#example-output)
+- [Contents of this repository](#contents)
+- [Technical Details](#tech-details)
+  - [GitHub Actions Workflow Architecture](#tech-details-github-actions-workflow-arch)
+- [Acknowledgements](#acknowledgements)
+- [Contributing](#contributing)
+
+---
+
 <a id="overview"></a>
 
 ## Overview
@@ -339,6 +358,16 @@ A collection of reusable Terraform modules for common infrastructure patterns, i
 
 > [!NOTE]
 > Terraform `azurerm_resource_provider_registration` does not provide a module for loading already registered Azure resource providers. Registration and un-registration of the Azure resource providers are likely conflicting between multiple Terraform project deployments, and Terraform state management for resource providers is also difficult, so it should not be used.
+
+<a id="tech-details"></a>
+
+## Technical Details
+
+<a id="tech-details-github-actions-workflow-arch"></a>
+
+### GitHub Actions Workflow Architecture
+
+[This document](./docs/GitHub-Actions-Workflow-Architecture.md) provides technical details about the workflow architecture using GitHub Actions that is provisioned in this project repository.
 
 <a id="acknowledgements"></a>
 
