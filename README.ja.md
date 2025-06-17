@@ -282,7 +282,7 @@ terraform apply
 
 ## プロビジョニングされたリソースの例
 
-[このドキュメント](./docs/Example-of-DevOps-Landing-Zone.md) (英語) では、プロビジョニングされたリソースの例について説明しています。
+[このドキュメント](./docs/Example-of-DevOps-Landing-Zone.ja.md) では、プロビジョニングされたリソースの例について説明しています。
 
 <a id="contents"></a>
 
