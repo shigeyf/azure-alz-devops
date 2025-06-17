@@ -37,9 +37,7 @@ GitHub Actions の GitHub Runner（CI/CD パイプラインの実行エージェ
 
 - GitHub Actions による **ワークフロー**
 
-  - GitHub Actions による CI/CD ワークフローは、各ブランチ (`features/*`、`dev`、`staging`、`main` ブランチ) へのプルリクエストまたは直接のプッシュによってトリガーされます。詳細なワークフローについては、後述で説明します。
-
-  - GitHub Actions は、各ブランチにおけるマージやプッシュに応じて、以下のように処理を段階的に実行します：
+  - GitHub Actions は、各ブランチ (`features/*`、`dev`、`staging`、`main` ブランチ) におけるマージやプッシュに応じて、以下のように処理を段階的に実行します。詳細なワークフローについては、後述で説明します。
 
     - `features/*` → `dev`: PR (プルリクエスト) による `validate` + `plan`
     - `dev` プッシュ: マージコミットのプッシュによる `plan` + `apply` による自動デプロイ

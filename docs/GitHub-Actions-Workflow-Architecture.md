@@ -33,8 +33,7 @@ The repository for this project provisions the following components as the build
 
 - **GitHub Actions Workflow**
 
-  - The CI/CD workflow, powered by GitHub Actions, is triggered by pull requests or direct pushes to each branch (`features/*`, `dev`, `staging`, `main`).
-  - GitHub Actions executes processes in stages in response to merges and pushes on each branch as follows:
+  - GitHub Actions executes processes in stages in response to merges and pushes on each branch (`features/*`, `dev`, `staging`, `main`) as follows:
     - `features/*` → `dev`: `validate` + `plan` triggered by a Pull Request (PR).
     - `dev` push: `plan` + `apply` for automated deployment triggered by a merge commit push.
     - `dev` → `staging`: `validate` + `plan` triggered by a PR.
