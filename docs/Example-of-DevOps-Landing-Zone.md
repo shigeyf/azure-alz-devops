@@ -17,7 +17,7 @@ This example has the following generated resource groups:
 
 This resource group contains:
 
-- **Key Vault**: storing Customer-managed Keys and GitHub PAT Secrets
+- **Key Vault**: storing Customer-managed Keys (CMK) and GitHub PAT Secrets
 - **Storage (Blob)**: storing Terraform State files for both this DevOps Landing Zone resource deployment and project resource deployment, and project CI/CD log data.
 
 ![Bootstrap Resources](/docs/images/provisioned-resources-example-2-bootstrap.png)
@@ -43,7 +43,7 @@ This resource group contains the following resources:
 - **Container Registry (ACR)**: managing container images of GitHub Runners
 - **Container App (ACA) Environment**
 - **Log Analytics Workspace**: managing logs for container applications
-- User-assigned Managed Identity: managing identity for secret data access (stored in Key Vault) and for pulling container images from Container Registry (ACR)
+- **User-assigned Managed Identity**: managing identity for secret data access (stored in Key Vault) and for pulling container images from Container Registry (ACR)
 
 > [!NOTE]
 > Container App Environment resource is generated when using both ACA and ACI as commonn resources for multiple projects. This resource itself will not incur any cost.
@@ -85,4 +85,4 @@ This resource group contains:
   - For Key Vault
   - For Container Registry
 
-![DevOps Landing Zone Network Resources (CAE)](/docs/images/provisioned-resources-example-7-devops-network.png)
+![DevOps Landing Zone Network Resources](/docs/images/provisioned-resources-example-7-devops-network.png)
