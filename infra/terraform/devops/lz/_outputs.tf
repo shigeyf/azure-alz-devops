@@ -66,6 +66,7 @@ output "options" {
     enable_github           = var.enable_github
     self_hosted_enabled     = var.enable_self_hosted_agents
     private_network_enabled = var.enable_private_network
+    devbox_enabled          = var.enable_devbox
 
     azuredevops = {
       organization_name     = var.azuredevops_organization_name
