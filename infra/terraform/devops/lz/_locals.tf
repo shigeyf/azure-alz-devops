@@ -5,6 +5,15 @@ locals {
   create_identity_resource_group_name         = "${module.naming_identity.resource_group.name}-${local.rand_id}"
   create_network_resource_group_name          = "${module.naming_network.resource_group.name}-${local.rand_id}"
   create_agents_aca_infra_resource_group_name = "${module.naming_agents.resource_group.name}-aca-infra-${local.rand_id}"
+  create_devbox_resource_group_name           = "${module.naming_devbox.resource_group.name}-${local.rand_id}"
+}
+
+locals {
+  devbox_suffix_base = concat(var.naming_suffix, ["devbox"], [local.location_short_name])
+  devbox_suffix      = lower(join("", local.devbox_suffix_base))
+  devbox_suffix_wh   = lower(join("-", local.devbox_suffix_base))
+  devbox_suffix_ab   = lower(join("", [for s in local.devbox_suffix_base : substr(s, 0, 1)]))
+  devbox_short_name  = "${local.devbox_suffix_ab}${sha256(local.devbox_suffix)}"
 }
 
 locals {
@@ -34,4 +43,12 @@ locals {
   acr_private_endpoint_name   = "${module.naming_network.private_endpoint.name}-acr-${local.rand_id}"
   blob_private_endpoint_name  = "${module.naming_network.private_endpoint.name}-blob-${local.rand_id}"
   kv_private_endpoint_name    = "${module.naming_network.private_endpoint.name}-kv-${local.rand_id}"
+
+  // DevBox Resources
+  enable_devbox              = var.enable_devbox
+  devbox_resource_group_name = local.enable_devbox ? azurerm_resource_group.devbox[0].name : ""
+  devbox_dev_center_name     = "dbc-${substr(local.devbox_short_name, 0, 14)}${local.rand_id}"
+  devbox_def_name_prefix     = "dbd-${local.devbox_suffix_wh}-${local.rand_id}-"
+  devbox_network_conn_name   = "dbnc-${local.devbox_suffix_wh}-${local.rand_id}"
+  devbox_tags                = merge(var.tags, { appTag = "devbox" })
 }

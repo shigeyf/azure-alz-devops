@@ -46,3 +46,10 @@ module "naming_network" {
   suffix         = concat(var.naming_suffix, ["network"], [local.location_short_name])
   suffix-padding = (local.rand_len + 1)
 }
+
+module "naming_devbox" {
+  # tflint-ignore: terraform_module_pinned_source
+  source         = "git::https://github.com/shigeyf/terraform-azurerm-naming?ref=master"
+  suffix         = concat(var.naming_suffix, ["devbox"], [local.location_short_name])
+  suffix-padding = (local.rand_len + 1)
+}

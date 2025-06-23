@@ -1,7 +1,7 @@
 // vnet.tf
 
 locals {
-  _vnet_subnets = {
+  _vnet_subnets = merge({
     (var.vnet_private_endpoint_subnet_name) = {
       name                  = var.vnet_private_endpoint_subnet_name
       address_prefix        = var.vnet_private_endpoint_subnet_address_prefix
@@ -40,7 +40,17 @@ locals {
         }
       ]
     }
-  }
+    },
+    local.enable_devbox
+    ? {
+      (var.vnet_devbox_subnet_name) = {
+        name                  = var.vnet_devbox_subnet_name
+        address_prefix        = var.vnet_devbox_subnet_address_prefix
+        naming_prefix_enabled = true
+      },
+    }
+    : {}
+  )
 }
 
 module "vnet" {
@@ -79,4 +89,5 @@ locals {
   private_endpoint_subnet_id   = length(module.vnet) > 0 ? local.subnet_ids[var.vnet_private_endpoint_subnet_name] : null
   container_app_subnet_id      = length(module.vnet) > 0 ? local.subnet_ids[var.vnet_container_app_subnet_name] : null
   container_instance_subnet_id = length(module.vnet) > 0 ? local.subnet_ids[var.vnet_container_instance_subnet_name] : null
+  devbox_subnet_id             = length(module.vnet) > 0 && local.enable_devbox ? local.subnet_ids[var.vnet_devbox_subnet_name] : null
 }

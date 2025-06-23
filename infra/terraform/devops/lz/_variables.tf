@@ -44,3 +44,9 @@ variable "enable_private_network" {
     error_message = "Private network can only be enabled if self-hosted agents are enabled"
   }
 }
+
+variable "enable_devbox" {
+  description = "Enable Microsoft DevBox resources for developers"
+  type        = bool
+  default     = false
+}

@@ -33,6 +33,22 @@ output "devops_network" {
   description = "Network resources"
 }
 
+output "devops_devbox" {
+  value = {
+    resource_group_name  = length(azurerm_resource_group.devbox) > 0 ? azurerm_resource_group.devbox[0].name : null
+    devbox_subnet_id     = local.devbox_subnet_id
+    devbox_connection_id = local.enable_devbox && local.enable_network_resources ? azurerm_dev_center_network_connection.this[0].id : null
+    devbox_definitions = { for key, def in azurerm_dev_center_dev_box_definition.this : key =>
+      {
+        name               = def.name
+        image_reference_id = def.image_reference_id
+        sku_name           = def.sku_name
+      }
+    }
+  }
+  description = "DevBox resources"
+}
+
 output "container_specs" {
   value = {
     azuredevops_agent_aca = length(module.azuredevops_agent_aca) > 0 ? module.azuredevops_agent_aca[0] : null

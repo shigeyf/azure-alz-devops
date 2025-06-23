@@ -25,6 +25,11 @@ variable "vnet_container_instance_subnet_address_prefix" {
   type        = string
 }
 
+variable "vnet_devbox_subnet_address_prefix" {
+  description = "Address prefix for the DevBox subnet in the virtual network"
+  type        = string
+}
+
 variable "vnet_private_endpoint_subnet_name" {
   description = "Subnet name for the private endpoints in the virtual network"
   type        = string
@@ -41,4 +46,10 @@ variable "vnet_container_instance_subnet_name" {
   description = "Subnet name for the Container Instances in the virtual network"
   type        = string
   default     = "container-instances"
+}
+
+variable "vnet_devbox_subnet_name" {
+  description = "Subnet name for the DexBox in the virtual network"
+  type        = string
+  default     = "devbox"
 }
