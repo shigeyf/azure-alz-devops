@@ -39,7 +39,6 @@ output "devops_devbox" {
     devbox_dev_center_id           = length(azurerm_dev_center.this) > 0 ? azurerm_dev_center.this[0].id : null
     devbox_subnet_id               = local.devbox_subnet_id
     devbox_dev_center_network_name = local.enable_devbox && local.enable_network_resources ? azurerm_dev_center_attached_network.this[0].name : null
-    #devbox_dev_center_network_name = local.enable_devbox && local.enable_network_resources ? "devctcon-alz-devops-devbox-jpe-manual-068e" : null
     devbox_definitions = { for key, def in azurerm_dev_center_dev_box_definition.this : key =>
       {
         name               = def.name
