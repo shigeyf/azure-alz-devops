@@ -33,6 +33,7 @@ locals {
   options                      = data.terraform_remote_state.devops.outputs.options
   agents_resource_group_name   = local._devops_outputs.devops_agents.resource_group_name
   identity_resource_group_name = local._devops_outputs.devops_identity.resource_group_name
+  devbox_resource_group_name   = local._devops_outputs.devops_devbox.resource_group_name
   #network_resource_group_name  = local._devops_outputs.devops_network.resource_group_name
 }
 
@@ -44,6 +45,13 @@ locals {
   container_app_environment_id        = local._devops_outputs.devops_agents.container_app_environment_id
   container_app_workload_profile_name = local._devops_outputs.devops_agents.container_app_workload_profile_name
   container_instance_subnet_id        = local._devops_outputs.devops_network.aci_subnet_id
+}
+
+// DevBox Resources
+locals {
+  devbox_dev_center_id           = local._devops_outputs.devops_devbox.devbox_dev_center_id
+  devbox_dev_center_network_name = local._devops_outputs.devops_devbox.devbox_dev_center_network_name
+  devbox_definitions             = local._devops_outputs.devops_devbox.devbox_definitions
 }
 
 // For debug
