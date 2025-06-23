@@ -47,8 +47,9 @@ locals {
   // DevBox Resources
   enable_devbox              = var.enable_devbox
   devbox_resource_group_name = local.enable_devbox ? azurerm_resource_group.devbox[0].name : ""
-  devbox_dev_center_name     = "dbc-${substr(local.devbox_short_name, 0, 14)}${local.rand_id}"
-  devbox_def_name_prefix     = "dbd-${local.devbox_suffix_wh}-${local.rand_id}-"
-  devbox_network_conn_name   = "dbnc-${local.devbox_suffix_wh}-${local.rand_id}"
+  devbox_dev_center_name     = "devct-${substr(local.devbox_short_name, 0, 14)}${local.rand_id}"
+  devbox_def_name_prefix     = "devboxdef-${local.devbox_suffix_wh}-${local.rand_id}-"
+  devbox_dev_center_con_name = "devctcon-${local.devbox_suffix_wh}-${local.rand_id}"
+  devbox_dev_center_net_name = "devctnet-${local.devbox_suffix_wh}-${local.rand_id}"
   devbox_tags                = merge(var.tags, { appTag = "devbox" })
 }
