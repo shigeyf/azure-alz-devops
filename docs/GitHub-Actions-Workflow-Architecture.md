@@ -1,4 +1,4 @@
-# GitHub Actions - Workflow Architecture Overview
+# Overview of CI/CD Workflow and Architecture
 
 [English](./GitHub-Actions-Workflow-Architecture.md) | [日本語](./GitHub-Actions-Workflow-Architecture.ja.md)
 
