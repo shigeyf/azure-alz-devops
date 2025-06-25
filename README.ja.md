@@ -44,6 +44,14 @@
 >
 > 将来的に Azure DevOps プロジェクトをサポートする予定です。
 
+## Azure アーキテクチャ
+
+Azure ネットワークを含めたアーキテクチャは、以下の図の通りです。この図では、プライベート仮想ネットワークを有効にし、GitHub セルフホステッド ランナーを Azure Container App のジョブを使って、KEDA スケーリングを使ってイベント駆動型で CI/CD ワークフローのジョブを実行する構成を示しています。
+
+また、開発者がセキュアな開発環境を使って Azure プロジェクトの開発を行うことができるよう、Microsoft Dev Box のためのプロジェクトが展開される構成を示しています。Dev Box の仮想テスクトップはプライベート仮想ネットワークに接続されるため、セキュアに Terraform 状態管理ファイルにアクセスを行い、Azure リソースの展開と管理を行うことができます。
+
+![Azure Architecture of DevOps Landing Zone](./docs/images/devops-landing-zone-azure-network-architecture-with-aca.png)
+
 <a id="getting-started"></a>
 
 ## はじめる
@@ -90,6 +98,18 @@ Azure CLI を使って準備した Entra ID にログインします。
 ```bash
 az login --tenant <Tenant_Id>
 ```
+
+> [!NOTE]
+> 準備したすべてのサブスクリプションでリソースプロバイダーの登録を行ってください。
+>
+> このリポジトリで準備した Terraform IaC コードでは、事前に必要となるリソースプロバイダーの登録を行っておくことが必須条件となっています。また、このプラットフォームを利用する Azure プロジェクトで、このリポジトリで展開されるユーザー割り当て ID の権限で `terraform plan` を実行した際にエラーが発生する可能性があります。
+>
+> リソースプロバイダーの登録は、以下のフォルダのスクリプトを利用することで、指定したリソースプロバイダーの一括登録を行うことができます。
+>
+> ```bash
+> cd $ProjectRoot/infra/terraform/_setup_subscriptions
+> ./register_rps.sh -s <your_subscription_id>
+> ```
 
 <a id="start-1-provision-bootstrap"></a>
 

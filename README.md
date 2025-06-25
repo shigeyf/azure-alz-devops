@@ -28,7 +28,7 @@
 This repository provides a comprehensive, modular infrastructure-as-code solution for deploying and managing Azure resources with using Terraform and CI/CD workflows. This is designed to support both Azure DevOps and GitHub-based CI/CD workflows, enabling organizations to automate the provisioning of secure, scalable, and policy-compliant cloud environments using infrastructure as code, versioned with Git.
 The project Git repository which is provisined by this module is designed to be used in enterprise environments and follows Azure and Terraform best practices.
 
-![DevOps Landing Zone Architecture Overview](/docs/images/devops-landing-zone-architecture.png)
+![High-level DevOps Landing Zone Architecture Overview](/docs/images/devops-landing-zone-architecture.png)
 
 Key features include:
 
@@ -44,6 +44,14 @@ The `infra/terraform` directory contains all core infrastructure code, organized
 > Currently we only support GitHub projects.
 >
 > We are planning to support Azure DevOps projects in the near future.
+
+## Azure Architecture
+
+The architecture including Azure network is shown in the diagram below. This diagram shows a configuration where a private virtual network is enabled and a GitHub self-hosted runners are hosted in Azure Container App jobs and execute CI/CD workflow jobs in an event-driven manner using KEDA scaling.
+
+It also shows a configuration where a project for a Microsoft Dev Box is deployed so that developers can work for Azure projects using a secure development environment. The Dev Box virtual desktop is connected to a private virtual network, so it can securely access Terraform state management files and deploy and manage Azure resources.
+
+![Azure Architecture of DevOps Landing Zone](./docs/images/devops-landing-zone-azure-network-architecture-with-aca.png)
 
 <a id="getting-started"></a>
 
@@ -91,6 +99,18 @@ Please log in to your Entra ID using Azure CLI.
 ```bash
 az login --tenant <Tenant_Id>
 ```
+
+> [!NOTE]
+> Please register a list of resource providers for all subscriptions you have prepared.
+>
+> The Terraform IaC code prepared in this repository requires that you need to register the necessary resource providers in advance. Also, in your future Azure projects, it may cause an error when running `terraform plan` with the allocated user-assigned identity.
+>
+> To register resource providers, you can use the script in the following folder to register the specified resource providers in bulk.
+>
+> ```bash
+> cd $ProjectRoot/infra/terraform/_setup_subscriptions
+> ./register_rps.sh -s <your_subscription_id>
+> ```
 
 <a id="start-1-provision-bootstrap"></a>
 
