@@ -216,28 +216,33 @@ The parameters that can be specified are as follows.
 
 <a id="start-2-provision-devops-lz-parameters"></a>
 
-| Parameter                                       | Type         | Optional | Description                                                                                              |
-| ----------------------------------------------- | ------------ | -------- | -------------------------------------------------------------------------------------------------------- |
-| `target_subscription_id`                        | string       | No       | Azure Subscription Id for deploying DevOps Landing Zone (DevOps landing zone resources)                  |
-| `naming_suffix`                                 | list(string) | Yes      | Suffix for resource naming (default: `["alz", "devops"]`)                                                |
-| `location`                                      | string       | No       | Location in where DevOps resources are deployed                                                          |
-| `tags`                                          | map(string)  | Yes      | Resource tags (default: `{}` [empty map])                                                                |
-| `enable_self_hosted_agents`                     | bool         | Yes      | Whether to enable self-hosted agents/runners (default: `true`)                                           |
-| `enable_private_network`                        | bool         | Yes      | Whether to enable the private virtual network where the self-hosted agents/runners run (default: `true`) |
-| `enable_github`                                 | bool         | Yes      | Whether to enable GitHub for this DevOps resource (default: `true`)                                      |
-| `github_organization_name`                      | string       | No       | GitHub organization name                                                                                 |
-| `github_personal_access_token`                  | string       | No       | GitHub personal access token to be used for provisioning GitHub resources                                |
-| `github_personal_access_token_for_runners`      | string       | No       | GitHub personal access token to be used for GitHub self-hosted runners                                   |
-| `vnet_address_prefix`                           | string       | No       | Virtual network address prefix for the private virtual network                                           |
-| `vnet_private_endpoint_subnet_address_prefix`   | string       | No       | Private endpoint subnet address prefix for the private virtual network                                   |
-| `vnet_gateway_subnet_address_prefix`            | string       | No       | Gateway subnet address prefix for the private virtual network                                            |
-| `vnet_container_app_subnet_address_prefix`      | string       | No       | ACA subnet address prefix for the private virtual network                                                |
-| `vnet_container_instance_subnet_address_prefix` | string       | No       | ACI subnet address prefix for the private virtual network                                                |
-| `vnet_private_endpoint_subnet_name`             | string       | Yes      | Private endpoint subnet name for the private virtual network (default: `private-endpoints`)              |
-| `vnet_container_app_subnet_name`                | string       | Yes      | ACA subnet name for the private virtual network (default: `container-apps`)                              |
-| `vnet_container_instance_subnet_name`           | string       | Yes      | ACI subnet name for the private virtual network (default: `container-instances`)                         |
-| `enable_agents_environment_zone_redundancy`     | bool         | Yes      | Whether to enable zone redundancy for ACA (default: `true`)                                              |
-| `bootstrap_config_filename`                     | string       | Yes      | Filename to load bootstrap config file to (default: `../../_bootstrap/bootstrap.config.json`)            |
+| Parameter                                       | Type         | Optional | Description                                                                                                                                             |
+| ----------------------------------------------- | ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target_subscription_id`                        | string       | No       | Azure Subscription Id for deploying DevOps Landing Zone (DevOps landing zone resources)                                                                 |
+| `naming_suffix`                                 | list(string) | Yes      | Suffix for resource naming (default: `["alz", "devops"]`)                                                                                               |
+| `location`                                      | string       | No       | Location in where DevOps resources are deployed                                                                                                         |
+| `tags`                                          | map(string)  | Yes      | Resource tags (default: `{}` [empty map])                                                                                                               |
+| `enable_self_hosted_agents`                     | bool         | Yes      | Whether to enable self-hosted agents/runners (default: `true`)                                                                                          |
+| `enable_private_network`                        | bool         | Yes      | Whether to enable the private virtual network where the self-hosted agents/runners run (default: `true`)                                                |
+| `enable_github`                                 | bool         | Yes      | Whether to enable GitHub for this DevOps resource (default: `true`)                                                                                     |
+| `enable_devbox`                                 | bool         | Yes      | Enable Microsoft Dev Box for this DevOps resources (default `true`)                                                                                     |
+| `github_organization_name`                      | string       | No       | GitHub organization name                                                                                                                                |
+| `github_personal_access_token`                  | string       | No       | GitHub personal access token to be used for provisioning GitHub resources                                                                               |
+| `github_personal_access_token_for_runners`      | string       | No       | GitHub personal access token to be used for GitHub self-hosted runners                                                                                  |
+| `vnet_address_prefix`                           | string       | No       | Virtual network address prefix for the private virtual network                                                                                          |
+| `vnet_private_endpoint_subnet_address_prefix`   | string       | No       | Private endpoint subnet address prefix for the private virtual network                                                                                  |
+| `vnet_gateway_subnet_address_prefix`            | string       | No       | Gateway subnet address prefix for the private virtual network                                                                                           |
+| `vnet_container_app_subnet_address_prefix`      | string       | No       | ACA subnet address prefix for the private virtual network                                                                                               |
+| `vnet_container_instance_subnet_address_prefix` | string       | No       | ACI subnet address prefix for the private virtual network                                                                                               |
+| `vnet_devbox_subnet_address_prefix`             | string       | No       | DevBox subnet address prefix for Private Virtual Network                                                                                                |
+| `vnet_private_endpoint_subnet_name`             | string       | Yes      | Private endpoint subnet name for the private virtual network (default: `private-endpoints`)                                                             |
+| `vnet_container_app_subnet_name`                | string       | Yes      | ACA subnet name for the private virtual network (default: `container-apps`)                                                                             |
+| `vnet_container_instance_subnet_name`           | string       | Yes      | ACI subnet name for the private virtual network (default: `container-instances`)                                                                        |
+| `vnet_devbox_subnet_name`                       | string       | Yes      | DevBox subnet name for Private Virtual NetworkAdd commentMore actions (default: `devbox`)                                                               |
+| `devbox_definitions_image_list`                 | list(string) | Yes      | A list of Dev Box VM Image for Dev Box Definitions (default: `["galleries/default/images/microsoftwindowsdesktop_windows-ent-cpc_win11-24h2-ent-cpc"]`) |
+| `devbox_definitions_sku_list`                   | list(string) | Yes      | A list of Dev Box VM SKU (default: all SKUs supported by default)                                                                                       |
+| `enable_agents_environment_zone_redundancy`     | bool         | Yes      | Whether to enable zone redundancy for ACA (default: `true`)                                                                                             |
+| `bootstrap_config_filename`                     | string       | Yes      | Filename to load bootstrap config file to (default: `../../_bootstrap/bootstrap.config.json`)                                                           |
 
 <a id="start-2-provision-devops-lz-2b"></a>
 
@@ -293,19 +298,23 @@ The parameters that can be specified are as follows.
 
 <a id="start-3-provision-devops-project-parameters"></a>
 
-| Parameter                   | Type        | Optional | Description                                                                                                                                |
-| --------------------------- | ----------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `target_subscription_id`    | string      | No       | Azure Subscription Id for provisioning DevOps Project resources                                                                            |
-| `project_name`              | string      | No       | Project name                                                                                                                               |
-| `location`                  | string      | No       | Location in where DevOps resources are deployed                                                                                            |
-| `tags`                      | map(string) | Yes      | Resource tags (default: `{}` [empty map])                                                                                                  |
-| `subscriptions`             | map(object) | No       | A map type list of Azure Subscriptions to be used in the DevOps Project                                                                    |
-| `use_templates_repository`  | bool        | Yes      | Whether to use a template repository with your DevOps Project (default: `true`)                                                            |
-| `use_runner_group`          | bool        | Yes      | Whether to use GitHub Runner Group with your DevOps Project (default: `false`)                                                             |
-| `use_self_hosted_runners`   | bool        | Yes      | Whether to use GitHub Self-Hosted Runners in your DevOps project (default: `true`)                                                         |
-| `self_hosted_runners_type`  | string      | Yes      | Compute type of GitHub Self-Hosted Runners (Options: "aca" or "aci") (default: `aca`)                                                      |
-| `bootstrap_config_filename` | string      | Yes      | Filename to load bootstrap config file to (default: `../../_bootstrap/bootstrap.config.json`)                                              |
-| `devops_tfstate_key`        | string      | Yes      | Terraform state management filename for DevOps Landing Zone resources (azurerm remote backend key) (default: `devopslz.terraform.tfstate`) |
+| Parameter                                        | Type        | Optional | Description                                                                                                                                                    |
+| ------------------------------------------------ | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target_subscription_id`                         | string      | No       | Azure Subscription Id for provisioning DevOps Project resources                                                                                                |
+| `project_name`                                   | string      | No       | Project name                                                                                                                                                   |
+| `location`                                       | string      | No       | Location in where DevOps resources are deployed                                                                                                                |
+| `tags`                                           | map(string) | Yes      | Resource tags (default: `{}` [empty map])                                                                                                                      |
+| `subscriptions`                                  | map(object) | No       | A map type list of Azure Subscriptions to be used in the DevOps Project                                                                                        |
+| `use_templates_repository`                       | bool        | Yes      | Whether to use a template repository with your DevOps Project (default: `true`)                                                                                |
+| `use_runner_group`                               | bool        | Yes      | Whether to use GitHub Runner Group with your DevOps Project (default: `false`)                                                                                 |
+| `use_self_hosted_runners`                        | bool        | Yes      | Whether to use GitHub Self-Hosted Runners in your DevOps project (default: `true`)                                                                             |
+| `self_hosted_runners_type`                       | string      | Yes      | Compute type of GitHub Self-Hosted Runners (Options: "aca" or "aci") (default: `aca`)                                                                          |
+| `use_devbox`                                     | bool        | Yes      | Whether to use Microsoft Dev Box; The `devops/lz` module must be provisioned with `true` for `enable_devbox` option (default: `true`)                          |
+| `devbox_maximum_dev_boxes_per_user`              | number      | Yes      | When specified, limits the maximum number of Dev Boxes a single user can create across all pools in the project (default: `2`)                                 |
+| `devbox_local_administrator_enabled`             | bool        | Yes      | Specifies whether owners of Dev Boxes in the Dev Center Project Pool are added as local administrators on the Dev Box (default: `true`)                        |
+| `devbox_stop_on_disconnect_grace_period_minutes` | number      | Yes      | The specified time in minutes to wait before stopping a Dev Center Dev Box once disconnect is detected. Possible values are between 60 and 480 (default: `60`) |
+| `bootstrap_config_filename`                      | string      | Yes      | Filename to load bootstrap config file to (default: `../../_bootstrap/bootstrap.config.json`)                                                                  |
+| `devops_tfstate_key`                             | string      | Yes      | Terraform state management filename for DevOps Landing Zone resources (azurerm remote backend key) (default: `devopslz.terraform.tfstate`)                     |
 
 <a id="start-3-provision-devops-project-3b"></a>
 

@@ -214,28 +214,33 @@ cp terraform.tfvars.sample terraform.tfvars
 
 <a id="start-2-provision-devops-lz-parameters"></a>
 
-| パラメーター                                    | 型           | オプショナル | 説明                                                                                                                      |
-| ----------------------------------------------- | ------------ | ------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `target_subscription_id`                        | string       | いいえ       | DevOps ランディングゾーン (DevOps ランディングゾーン リソース) をデプロイするための Azure サブスクリプション ID           |
-| `naming_suffix`                                 | list(string) | はい         | リソース命名用のサフィックス (既定値: `["alz", "devops"]`)                                                                |
-| `location`                                      | string       | いいえ       | DevOps リソースをプロビジョニングするリージョン                                                                           |
-| `tags`                                          | map(string)  | はい         | リソース タグ (既定値: `{}` [空のマップ])                                                                                 |
-| `enable_self_hosted_agents`                     | bool         | はい         | セルフホステッド エージェント/ランナーを有効にするかどうか (既定値: `true`)                                               |
-| `enable_private_network`                        | bool         | はい         | セルフホステッド エージェント/ランナーが実行されているプラ​​イベート仮想ネットワークを有効にするかどうか (既定値: `true`) |
-| `enable_github`                                 | bool         | はい         | この DevOps リソースに対して GitHub を有効にするかどうか (既定値: `true`)                                                 |
-| `github_organization_name`                      | string       | いいえ       | GitHub の組織名                                                                                                           |
-| `github_personal_access_token`                  | string       | いいえ       | GitHub リソースのプロビジョニングに使用する GitHub パーソナル アクセス トークン                                           |
-| `github_personal_access_token_for_runners`      | string       | いいえ       | GitHub セルフホステッド ランナーに使用する GitHub パーソナル アクセス トークン                                            |
-| `vnet_address_prefix`                           | string       | いいえ       | プライベート仮想ネットワークの仮想ネットワーク アドレス プレフィックス                                                    |
-| `vnet_private_endpoint_subnet_address_prefix`   | string       | いいえ       | プライベート仮想ネットワークのプライベート エンドポイント サブネット アドレス プレフィックス                              |
-| `vnet_gateway_subnet_address_prefix`            | string       | いいえ       | プライベート仮想ネットワークのゲートウェイ サブネット アドレス プレフィックス                                             |
-| `vnet_container_app_subnet_address_prefix`      | string       | いいえ       | プライベート仮想ネットワークの ACA サブネット アドレス プレフィックス                                                     |
-| `vnet_container_instance_subnet_address_prefix` | string       | いいえ       | プライベート仮想ネットワークの ACI サブネット アドレス プレフィックス                                                     |
-| `vnet_private_endpoint_subnet_name`             | string       | はい         | プライベート仮想ネットワークのプライベート エンドポイント サブネット名 (既定値: `private-endpoints`)                      |
-| `vnet_container_app_subnet_name`                | string       | はい         | プライベート仮想ネットワークの ACA サブネット名 (既定値: `container-apps`)                                                |
-| `vnet_container_instance_subnet_name`           | string       | はい         | プライベート仮想ネットワークの ACI サブネット名 (既定値: `container-instances`)                                           |
-| `enable_agents_environment_zone_redundancy`     | bool         | はい         | ACA のゾーン冗長化を有効化するかどうか (既定値: `true`)                                                                   |
-| `bootstrap_config_filename`                     | string       | はい         | ブートストラップ構成ファイルが保存されたファイル名 (既定値: `../../_bootstrap/bootstrap.config.json`)                     |
+| パラメーター                                    | 型           | オプショナル | 説明                                                                                                                                           |
+| ----------------------------------------------- | ------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `target_subscription_id`                        | string       | いいえ       | DevOps ランディングゾーン (DevOps ランディングゾーン リソース) をデプロイするための Azure サブスクリプション ID                                |
+| `naming_suffix`                                 | list(string) | はい         | リソース命名用のサフィックス (既定値: `["alz", "devops"]`)                                                                                     |
+| `location`                                      | string       | いいえ       | DevOps リソースをプロビジョニングするリージョン                                                                                                |
+| `tags`                                          | map(string)  | はい         | リソース タグ (既定値: `{}` [空のマップ])                                                                                                      |
+| `enable_self_hosted_agents`                     | bool         | はい         | セルフホステッド エージェント/ランナーを有効にするかどうか (既定値: `true`)                                                                    |
+| `enable_private_network`                        | bool         | はい         | セルフホステッド エージェント/ランナーが実行されているプラ​​イベート仮想ネットワークを有効にするかどうか (既定値: `true`)                      |
+| `enable_github`                                 | bool         | はい         | この DevOps リソースに対して GitHub を有効にするかどうか (既定値: `true`)                                                                      |
+| `enable_devbox`                                 | bool         | はい         | この DevOps リソースに対して Microsoft Dev Box を有効にします (デフォルトは `true`)                                                            |
+| `github_organization_name`                      | string       | いいえ       | GitHub の組織名                                                                                                                                |
+| `github_personal_access_token`                  | string       | いいえ       | GitHub リソースのプロビジョニングに使用する GitHub パーソナル アクセス トークン                                                                |
+| `github_personal_access_token_for_runners`      | string       | いいえ       | GitHub セルフホステッド ランナーに使用する GitHub パーソナル アクセス トークン                                                                 |
+| `vnet_address_prefix`                           | string       | いいえ       | プライベート仮想ネットワークの仮想ネットワーク アドレス プレフィックス                                                                         |
+| `vnet_private_endpoint_subnet_address_prefix`   | string       | いいえ       | プライベート仮想ネットワークのプライベート エンドポイント サブネット アドレス プレフィックス                                                   |
+| `vnet_gateway_subnet_address_prefix`            | string       | いいえ       | プライベート仮想ネットワークのゲートウェイ サブネット アドレス プレフィックス                                                                  |
+| `vnet_container_app_subnet_address_prefix`      | string       | いいえ       | プライベート仮想ネットワークの ACA サブネット アドレス プレフィックス                                                                          |
+| `vnet_container_instance_subnet_address_prefix` | string       | いいえ       | プライベート仮想ネットワークの ACI サブネット アドレス プレフィックス                                                                          |
+| `vnet_devbox_subnet_address_prefix`             | string       | いいえ       | プライベート仮想ネットワークの DevBox サブネット アドレス プレフィックス                                                                       |
+| `vnet_private_endpoint_subnet_name`             | string       | はい         | プライベート仮想ネットワークのプライベート エンドポイント サブネット名 (既定値: `private-endpoints`)                                           |
+| `vnet_container_app_subnet_name`                | string       | はい         | プライベート仮想ネットワークの ACA サブネット名 (既定値: `container-apps`)                                                                     |
+| `vnet_container_instance_subnet_name`           | string       | はい         | プライベート仮想ネットワークの ACI サブネット名 (既定値: `container-instances`)                                                                |
+| `vnet_devbox_subnet_name`                       | STring       | はい         | プライベート仮想ネットワークの DevBox サブネット名コメントを追加その他のアクション (既定値: `devbox`)                                          |
+| `devbox_definitions_image_list`                 | list(string) | はい         | Dev Box 定義の Dev Box VM イメージのリスト (既定値: `["galleries/default/images/microsoftwindowsdesktop_windows-ent-cpc_win11-24h2-ent-cpc"]`) |
+| `devbox_definitions_sku_list`                   | list(string) | はい         | Dev Box VM SKU のリスト (既定値: デフォルトでサポートされているすべての SKU)                                                                   |
+| `enable_agents_environment_zone_redundancy`     | bool         | はい         | ACA のゾーン冗長化を有効化するかどうか (既定値: `true`)                                                                                        |
+| `bootstrap_config_filename`                     | string       | はい         | ブートストラップ構成ファイルが保存されたファイル名 (既定値: `../../_bootstrap/bootstrap.config.json`)                                          |
 
 <a id="start-2-provision-devops-lz-2b"></a>
 
@@ -290,19 +295,23 @@ cp terraform.tfvars.sample terraform.tfvars
 
 <a id="start-3-provision-devops-project-parameters"></a>
 
-| パラメーター                | 型          | オプショナル | 説明                                                                                                                                         |
-| --------------------------- | ----------- | ------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `target_subscription_id`    | string      | いいえ       | DevOps Project リソースをデプロイするための Azure サブスクリプション ID                                                                      |
-| `project_name`              | string      | いいえ       | プロジェクト名                                                                                                                               |
-| `location`                  | string      | いいえ       | DevOps プロジェクトリソースをプロビジョニングするリージョン                                                                                  |
-| `tags`                      | map(string) | はい         | リソース タグ (既定値: `{}` [空のマップ])                                                                                                    |
-| `subscriptions`             | map(object) | いいえ       | DevOps プロジェクトで使用する Azure サブスクリプションのマップ型リスト                                                                       |
-| `use_templates_repository`  | bool        | はい         | DevOps プロジェクトでテンプレート リポジトリを使用するかどうか (既定値: `true`)                                                              |
-| `use_runner_group`          | bool        | はい         | DevOps プロジェクトで GitHub ランナー グループを使用するかどうか (既定値: `false`)                                                           |
-| `use_self_hosted_runners`   | bool        | はい         | DevOps プロジェクトで GitHub セルフホステッド ランナーを使用するかどうか (既定値: `true`)                                                    |
-| `self_hosted_runners_type`  | string      | はい         | GitHub セルフホステッド ランナーのコンピューティング タイプ (オプション: "aca" または "aci") (既定値: `aca`)                                 |
-| `bootstrap_config_filename` | string      | はい         | ブートストラップ構成ファイルを保存するファイル名 (既定値: `../../_bootstrap/bootstrap.config.json`)                                          |
-| `devops_tfstate_key`        | string      | はい         | DevOps ランディングゾーン リソースの Terraform 状態管理ファイル名（azurerm リモートバックエンドキー） (既定値: `devopslz.terraform.tfstate`) |
+| パラメーター                                     | 型          | オプショナル | 説明                                                                                                                                                                     |
+| ------------------------------------------------ | ----------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `target_subscription_id`                         | string      | いいえ       | DevOps Project リソースをデプロイするための Azure サブスクリプション ID                                                                                                  |
+| `project_name`                                   | string      | いいえ       | プロジェクト名                                                                                                                                                           |
+| `location`                                       | string      | いいえ       | DevOps プロジェクトリソースをプロビジョニングするリージョン                                                                                                              |
+| `tags`                                           | map(string) | はい         | リソース タグ (既定値: `{}` [空のマップ])                                                                                                                                |
+| `subscriptions`                                  | map(object) | いいえ       | DevOps プロジェクトで使用する Azure サブスクリプションのマップ型リスト                                                                                                   |
+| `use_templates_repository`                       | bool        | はい         | DevOps プロジェクトでテンプレート リポジトリを使用するかどうか (既定値: `true`)                                                                                          |
+| `use_runner_group`                               | bool        | はい         | DevOps プロジェクトで GitHub ランナー グループを使用するかどうか (既定値: `false`)                                                                                       |
+| `use_self_hosted_runners`                        | bool        | はい         | DevOps プロジェクトで GitHub セルフホステッド ランナーを使用するかどうか (既定値: `true`)                                                                                |
+| `self_hosted_runners_type`                       | string      | はい         | GitHub セルフホステッド ランナーのコンピューティング タイプ (オプション: "aca" または "aci") (既定値: `aca`)                                                             |
+| `use_devbox`                                     | bool        | Yes          | Microsoft Dev Box を使用するかどうか; `devops/lz` モジュールをプロビジョニングする際に `enable_devbox` オプションを `true` に設定する必要があります (デフォルト: `true`) |
+| `devbox_maximum_dev_boxes_per_user`              | number      | Yes          | 指定すると、プロジェクト内のすべてのプールで 1 人の開発者ユーザーが作成できる Dev Box の最大数を制限します (デフォルト: `2`)                                             |
+| `devbox_local_administrator_enabled`             | bool        | Yes          | Dev Center プロジェクト プール内の Dev Box の所有者を Dev Box のローカル管理者として追加するかどうかを指定します (デフォルト: `true`)                                    |
+| `devbox_stop_on_disconnect_grace_period_minutes` | number      | Yes          | 切断が検出された後、Dev Center Dev Box を停止するまでの待機時間 (分単位)。可能な値は 60 〜 480 です (デフォルト: `60`)                                                   |
+| `bootstrap_config_filename`                      | string      | はい         | ブートストラップ構成ファイルを保存するファイル名 (既定値: `../../_bootstrap/bootstrap.config.json`)                                                                      |
+| `devops_tfstate_key`                             | string      | はい         | DevOps ランディングゾーン リソースの Terraform 状態管理ファイル名（azurerm リモートバックエンドキー） (既定値: `devopslz.terraform.tfstate`)                             |
 
 <a id="start-3-provision-devops-project-3b"></a>
 
