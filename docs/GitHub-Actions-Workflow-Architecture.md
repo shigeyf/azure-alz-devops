@@ -125,6 +125,10 @@ This strategy ensures a safe and managed transition from development to the prod
    - The merge commit to the `main` branch triggers the CI/CD pipeline, automatically provisioning the Terraform IaC changes to the **Production environment** in Azure.
    - Manual approval is required before provisioning to the **Production environment**.
 
+![Git log example of CI/CD Strategy Across Multiple Branches](./images/branch-ci-cd-example.png)
+
+> Figure 3: Git log example of CI/CD Workflow Strategy.
+
 ### Branch Structure
 
 The main branches used in this strategy are as follows:
