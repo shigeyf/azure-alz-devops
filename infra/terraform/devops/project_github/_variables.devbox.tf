@@ -12,7 +12,7 @@ variable "devbox_local_administrator_enabled" {
   default     = true
 }
 
-variable "devops_stop_on_disconnect_grace_period_minutes" {
+variable "devbox_stop_on_disconnect_grace_period_minutes" {
   description = "The specified time in minutes to wait before stopping a Dev Center Dev Box once disconnect is detected. Possible values are between 60 and 480."
   type        = number
   default     = 60

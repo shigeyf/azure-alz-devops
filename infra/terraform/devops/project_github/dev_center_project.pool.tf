@@ -11,7 +11,7 @@ resource "azurerm_dev_center_project_pool" "this" {
   dev_center_attached_network_name = local.options.private_network_enabled ? local.devbox_dev_center_network_name : null
 
   local_administrator_enabled             = var.devbox_local_administrator_enabled
-  stop_on_disconnect_grace_period_minutes = var.devops_stop_on_disconnect_grace_period_minutes
+  stop_on_disconnect_grace_period_minutes = var.devbox_stop_on_disconnect_grace_period_minutes
 }
 
 # resource "azapi_resource" "dev_center_project_pool" {
