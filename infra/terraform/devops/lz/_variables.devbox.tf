@@ -2,11 +2,23 @@
 
 variable "devbox_definitions_image_list" {
   description = "A list of VM Pool images for prepared DevBox Definitions."
-  type        = list(string)
+  type = list(object({
+    image_ref         = string
+    hibernate_enabled = bool
+  }))
   default = [
-    "galleries/default/images/microsoftwindowsdesktop_windows-ent-cpc_win11-24h2-ent-cpc",
-    //"galleries/default/images/microsoftwindowsdesktop_windows-ent-cpc_win11-24h2-ent-cpc-m365",
-    // "galleries/default/images/microsoftvisualstudio_visualstudioplustools_vs-2022-pro-general-win10-m365-gen2",
+    {
+      image_ref         = "galleries/default/images/microsoftwindowsdesktop_windows-ent-cpc_win11-24h2-ent-cpc"
+      hibernate_enabled = true
+    }
+    // {
+    //   image_ref         = "galleries/default/images/microsoftwindowsdesktop_windows-ent-cpc_win11-24h2-ent-cpc-m365",
+    //   hibernate_enabled = true
+    // },
+    // {
+    //   image_ref         = "galleries/default/images/microsoftvisualstudio_visualstudioplustools_vs-2022-pro-general-win10-m365-gen2",
+    //   hibernate_enabled = true
+    // },
   ]
 }
 
