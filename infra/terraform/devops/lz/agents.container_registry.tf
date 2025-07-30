@@ -1,9 +1,8 @@
 // container_registry.tf
 
 module "acr" {
-  count = local.enable_agents_resources ? 1 : 0
-  # tflint-ignore: terraform_module_pinned_source
-  source = "git::https://github.com/shigeyf/terraform-azurerm-reusables.git//infra/terraform/modules/acr?ref=main"
+  count  = local.enable_agents_resources ? 1 : 0
+  source = "../../modules/acr"
 
   resource_group_name           = local.agents_resource_group_name
   location                      = var.location

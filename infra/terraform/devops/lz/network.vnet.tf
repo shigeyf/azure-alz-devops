@@ -3,39 +3,40 @@
 locals {
   _vnet_subnets = merge({
     (var.vnet_private_endpoint_subnet_name) = {
-      name                  = var.vnet_private_endpoint_subnet_name
-      address_prefix        = var.vnet_private_endpoint_subnet_address_prefix
-      naming_prefix_enabled = true
+      name                              = "snet-${var.vnet_private_endpoint_subnet_name}"
+      address_prefix                    = var.vnet_private_endpoint_subnet_address_prefix
+      default_outbound_access_enabled   = false
+      private_endpoint_network_policies = "Disabled"
     },
     "GatewaySubnet" = {
-      "name"                  = "GatewaySubnet"
-      "address_prefix"        = var.vnet_gateway_subnet_address_prefix
-      "naming_prefix_enabled" = false
+      name                              = "GatewaySubnet"
+      address_prefix                    = var.vnet_gateway_subnet_address_prefix
+      private_endpoint_network_policies = "Disabled"
     },
     (var.vnet_container_instance_subnet_name) = {
-      name                  = var.vnet_container_instance_subnet_name
-      address_prefix        = var.vnet_container_instance_subnet_address_prefix
-      naming_prefix_enabled = true
-      delegation = [
+      name                              = "snet-${var.vnet_container_instance_subnet_name}"
+      address_prefix                    = var.vnet_container_instance_subnet_address_prefix
+      default_outbound_access_enabled   = false
+      private_endpoint_network_policies = "Disabled"
+      delegations = [
         {
           name = "Microsoft.ContainerInstance/containerGroups"
           service_delegation = {
-            name    = "Microsoft.ContainerInstance/containerGroups"
-            actions = ["Microsoft.Network/virtualNetworks/subnets/action"]
+            name = "Microsoft.ContainerInstance/containerGroups"
           }
         }
       ]
     }
     (var.vnet_container_app_subnet_name) = {
-      name                  = var.vnet_container_app_subnet_name
-      address_prefix        = var.vnet_container_app_subnet_address_prefix
-      naming_prefix_enabled = true
-      delegation = [
+      name                              = "snet-${var.vnet_container_app_subnet_name}"
+      address_prefix                    = var.vnet_container_app_subnet_address_prefix
+      default_outbound_access_enabled   = false
+      private_endpoint_network_policies = "Disabled"
+      delegations = [
         {
           name = "Microsoft.App/environments"
           service_delegation = {
-            name    = "Microsoft.App/environments"
-            actions = ["Microsoft.Network/virtualNetworks/subnets/join/action"]
+            name = "Microsoft.App/environments"
           }
         }
       ]
@@ -44,9 +45,10 @@ locals {
     local.enable_devbox
     ? {
       (var.vnet_devbox_subnet_name) = {
-        name                  = var.vnet_devbox_subnet_name
-        address_prefix        = var.vnet_devbox_subnet_address_prefix
-        naming_prefix_enabled = true
+        name                              = "snet-${var.vnet_devbox_subnet_name}"
+        address_prefix                    = var.vnet_devbox_subnet_address_prefix
+        default_outbound_access_enabled   = false
+        private_endpoint_network_policies = "Disabled"
       },
     }
     : {}
@@ -54,9 +56,8 @@ locals {
 }
 
 module "vnet" {
-  count = local.enable_network_resources ? 1 : 0
-  # tflint-ignore: terraform_module_pinned_source
-  source = "git::https://github.com/shigeyf/terraform-azurerm-reusables.git//infra/terraform/modules/vnet?ref=main"
+  count  = local.enable_network_resources ? 1 : 0
+  source = "../../modules/vnet"
 
   resource_group_name = local.network_resource_group_name
   location            = var.location
@@ -72,12 +73,9 @@ module "vnet" {
     }
   ]
 
-  // Options
-  address_prefix      = var.vnet_address_prefix
-  subnets             = local._vnet_subnets
-  enable_nat_gateway  = true
-  enable_bastion_host = false
-  enable_vpn_gateway  = false
+  address_prefix     = var.vnet_address_prefix
+  subnets            = local._vnet_subnets
+  enable_nat_gateway = true
 
   depends_on = [
     azurerm_resource_group.network,
