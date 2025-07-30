@@ -18,8 +18,7 @@ locals {
 }
 
 module "bootstrap" {
-  # tflint-ignore: terraform_module_pinned_source
-  source = "git::https://github.com/shigeyf/terraform-azurerm-bootstrap.git//infra/bootstrap?ref=main"
+  source = "../modules/bootstrap"
 
   resource_group_name  = local.resource_group_name
   storage_account_name = local.storage_account_name

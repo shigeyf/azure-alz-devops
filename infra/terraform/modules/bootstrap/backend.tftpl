@@ -1,0 +1,10 @@
+// backend.tf
+
+terraform {
+  backend "azurerm" {
+    use_azuread_auth     = true
+    storage_account_name = "${storage_account_name}"
+    container_name       = "${tfstate_container_name}"
+    key                  = "${bootstrap_prefix}.terraform.tfstate"
+  }
+}
