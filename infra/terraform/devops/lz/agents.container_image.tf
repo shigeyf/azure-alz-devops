@@ -19,7 +19,7 @@ module "azuredevops_agent_aca" {
 }
 
 module "github_runner_aca" {
-  count  = local.enable_agents_resources && local.enable_agents_on_aca && var.enable_azuredevops ? 1 : 0
+  count  = local.enable_agents_resources && local.enable_agents_on_aca && var.enable_github ? 1 : 0
   source = "../../modules/github_runner_aca"
 
   organization_name     = var.github_organization_name
@@ -38,7 +38,7 @@ module "azuredevops_agent_aci" {
 }
 
 module "github_runner_aci" {
-  count  = local.enable_agents_resources && local.enable_agents_on_aci && var.enable_azuredevops ? 1 : 0
+  count  = local.enable_agents_resources && local.enable_agents_on_aci && var.enable_github ? 1 : 0
   source = "../../modules/github_runner_aci"
 
   runner_pat_secret_id = azurerm_key_vault_secret.github[local.vcs_secret_github_personal_access_token_agent].versionless_id
