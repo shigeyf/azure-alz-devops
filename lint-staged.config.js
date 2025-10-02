@@ -27,7 +27,8 @@ const config = {
     const formatter = filenames.map((filename) => `terraform fmt '${filename}'`);
     const directories = filenames.map((filename) => path.dirname(filename));
     const uniqueDirectories = [...new Set(directories)];
-    const linter = uniqueDirectories.map((dir) => `tflint --chdir=${dir}`);
+    const tflintFile = path.resolve('./infra/.tflint.hcl')
+    const linter = uniqueDirectories.map((dir) => `tflint --config="${tflintFile}" --chdir=${dir}`)
     return formatter.concat(linter);
   },
 }
