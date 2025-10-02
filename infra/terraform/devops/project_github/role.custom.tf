@@ -2,7 +2,7 @@
 
 resource "azurerm_role_definition" "custom_ra_writer" {
   for_each          = var.subscriptions
-  name              = "[Custom] Role Assignments Writer ${each.key}"
+  name              = "[Custom] Role Assignments Writer ${each.key} for ${var.project_name}"
   description       = "Manage RoleAssignments read/write under this subscription"
   scope             = "/subscriptions/${each.value.id}"
   assignable_scopes = ["/subscriptions/${each.value.id}"]
