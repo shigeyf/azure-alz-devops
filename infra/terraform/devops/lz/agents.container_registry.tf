@@ -16,6 +16,8 @@ module "acr" {
   private_endpoint_subnet_id    = local.enable_network_resources ? local.private_endpoint_subnet_id : null
   private_dns_zone_ids          = var.enable_private_network ? [local.acr_private_dns_zone_id] : []
 
+  override_public_network_access = true
+
   depends_on = [
     azurerm_resource_group.agents,
     module.vnet,

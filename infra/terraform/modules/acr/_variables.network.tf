@@ -11,6 +11,12 @@ variable "enable_public_network_access" {
   }
 }
 
+variable "override_public_network_access" {
+  description = "Override a configuration for `enable_public_network_access`"
+  type        = bool
+  default     = false
+}
+
 variable "network_resource_group_name" {
   description = "Resource Group name for Network related resources (pre-generated resource group)"
   type        = string

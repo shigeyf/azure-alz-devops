@@ -13,7 +13,7 @@ resource "azurerm_container_registry" "this" {
 
   sku                           = var.sku
   admin_enabled                 = var.admin_enabled
-  public_network_access_enabled = var.enable_public_network_access
+  public_network_access_enabled = var.override_public_network_access ? true : (var.enable_public_network_access ? true : false)
   network_rule_bypass_option    = var.network_rule_bypass_option
   export_policy_enabled         = var.export_policy_enabled
 
