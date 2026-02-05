@@ -1,5 +1,9 @@
 # DevOps Landing Zone for Azure Resources Terraform CI/CD deployment
 
+This repository was moved to [Azure/DevOps-Landing-Zone](https://github.com/Azure/DevOps-Landing-Zone) repository, and is no longer maintained.
+
+Please give you feedback to [Azure/DevOps-Landing-Zone](https://github.com/Azure/DevOps-Landing-Zone) repository!!
+
 [English](./README.md) | [日本語](./README.ja.md)
 
 ---
