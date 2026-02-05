@@ -1,5 +1,9 @@
 # Terraform を使った Azure リソース CI/CD デプロイのための DevOps ランディングゾーン
 
+このリポジトリは、[Azure/DevOps-Landing-Zone](https://github.com/Azure/DevOps-Landing-Zone) に移動しました。
+
+フィードバックは [Azure/DevOps-Landing-Zone](https://github.com/Azure/DevOps-Landing-Zone) リポジトリまで、こちらまでお願いします。
+
 [English](./README.md) | [日本語](./README.ja.md)
 
 ---
